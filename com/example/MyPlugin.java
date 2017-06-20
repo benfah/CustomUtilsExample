@@ -21,11 +21,4 @@ public class MyPlugin extends JavaPlugin
 		CustomRegistry.registerGUI(rfMenu, this);
 		
 	}
-	
-	@Override
-	public void onLoad() {
-		super.onLoad();
-	}
-	
-	
 }

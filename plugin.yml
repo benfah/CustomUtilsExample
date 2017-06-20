@@ -1,6 +1,6 @@
 name: ExmaplePlugin
 version: 0.1
 main: com.example.MyPlugin
-depend: [Blablabla]
+depend: [CustomUtils]
 commands:
   lolx:
