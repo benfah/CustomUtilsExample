@@ -229,7 +229,8 @@ public class Frame {
         return changed;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         StringBuffer buffer = new StringBuffer();
 
         buffer.append("locals = [");

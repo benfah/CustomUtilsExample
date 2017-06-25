@@ -16,10 +16,6 @@
 
 package javassist.util;
 
-import com.sun.jdi.*;
-import com.sun.jdi.connect.*;
-import com.sun.jdi.event.*;
-import com.sun.jdi.request.*;
 import java.io.*;
 import java.util.*;
 
@@ -216,7 +212,8 @@ public class HotSwapper {
                 e.printStackTrace(System.err);
             }
 
-            public void run() {
+            @Override
+			public void run() {
                 EventSet events = null;
                 try {
                     events = waitEvent();

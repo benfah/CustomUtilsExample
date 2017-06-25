@@ -61,7 +61,8 @@ public class ScopedClassPool extends ClassPool {
      *            the repository
      *@deprecated
      */
-    protected ScopedClassPool(ClassLoader cl, ClassPool src,
+    @Deprecated
+	protected ScopedClassPool(ClassLoader cl, ClassPool src,
             ScopedClassPoolRepository repository) {
        this(cl, src, repository, false);
     }
@@ -99,7 +100,8 @@ public class ScopedClassPool extends ClassPool {
      * 
      * @return the class loader
      */
-    public ClassLoader getClassLoader() {
+    @Override
+	public ClassLoader getClassLoader() {
        ClassLoader cl = getClassLoader0();
        if (cl == null && !isBootstrapCl)
        {
@@ -163,7 +165,8 @@ public class ScopedClassPool extends ClassPool {
      *            the class name
      * @return the class
      */
-    protected CtClass getCached(String classname) {
+    @Override
+	protected CtClass getCached(String classname) {
         CtClass clazz = getCachedLocally(classname);
         if (clazz == null) {
             boolean isLocal = false;
@@ -219,7 +222,8 @@ public class ScopedClassPool extends ClassPool {
      * @param dynamic
      *            whether the class is dynamically generated
      */
-    protected void cacheCtClass(String classname, CtClass c, boolean dynamic) {
+    @Override
+	protected void cacheCtClass(String classname, CtClass c, boolean dynamic) {
         if (dynamic) {
             super.cacheCtClass(classname, c, dynamic);
         }
@@ -289,7 +293,8 @@ public class ScopedClassPool extends ClassPool {
      * @throws CannotCompileException
      *             for any error
      */
-    public Class toClass(CtClass ct, ClassLoader loader, ProtectionDomain domain)
+    @Override
+	public Class toClass(CtClass ct, ClassLoader loader, ProtectionDomain domain)
             throws CannotCompileException {
         // We need to pass up the classloader stored in this pool, as the
         // default implementation uses the Thread context cl.

@@ -49,15 +49,18 @@ public class LocalVariableTypeAttribute extends LocalVariableAttribute {
         super(cp, tag, dest);
     }
 
-    String renameEntry(String desc, String oldname, String newname) {
+    @Override
+	String renameEntry(String desc, String oldname, String newname) {
         return SignatureAttribute.renameClass(desc, oldname, newname);
     }
 
-    String renameEntry(String desc, Map classnames) {
+    @Override
+	String renameEntry(String desc, Map classnames) {
         return SignatureAttribute.renameClass(desc, classnames);
     }
 
-    LocalVariableAttribute makeThisAttr(ConstPool cp, byte[] dest) {
+    @Override
+	LocalVariableAttribute makeThisAttr(ConstPool cp, byte[] dest) {
         return new LocalVariableTypeAttribute(cp, dest);
     }
 }

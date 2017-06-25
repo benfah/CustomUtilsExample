@@ -65,7 +65,8 @@ public class URLClassPath implements ClassPath {
         this.packageName = packageName;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return hostname + ":" + port + directory;
     }
 
@@ -74,7 +75,8 @@ public class URLClassPath implements ClassPath {
      *
      * @return null if the class file could not be found. 
      */
-    public InputStream openClassfile(String classname) {
+    @Override
+	public InputStream openClassfile(String classname) {
         try {
             URLConnection con = openClassfile0(classname);
             if (con != null)
@@ -99,7 +101,8 @@ public class URLClassPath implements ClassPath {
      *
      * @return null if the class file could not be obtained. 
      */
-    public URL find(String classname) {
+    @Override
+	public URL find(String classname) {
         try {
             URLConnection con = openClassfile0(classname);
             InputStream is = con.getInputStream();
@@ -115,7 +118,8 @@ public class URLClassPath implements ClassPath {
     /**
      * Closes this class path.
      */
-    public void close() {}
+    @Override
+	public void close() {}
 
     /**
      * Reads a class file on an http server.

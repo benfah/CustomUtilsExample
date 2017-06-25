@@ -66,7 +66,8 @@ public class BasicBlock {
         }
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         StringBuffer sbuf = new StringBuffer();
         String cname = this.getClass().getName();
         int i = cname.lastIndexOf('.');
@@ -118,7 +119,8 @@ public class BasicBlock {
             catcher = null;
         }
 
-        public int compareTo(Object obj) {
+        @Override
+		public int compareTo(Object obj) {
             if (obj instanceof Mark) {
                 int pos = ((Mark)obj).position;
                 return position - pos;

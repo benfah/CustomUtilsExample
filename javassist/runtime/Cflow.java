@@ -32,7 +32,8 @@ public class Cflow extends ThreadLocal {
         void dec() { --depth; }
     }
 
-    protected synchronized Object initialValue() {
+    @Override
+	protected synchronized Object initialValue() {
         return new Depth();
     }
 

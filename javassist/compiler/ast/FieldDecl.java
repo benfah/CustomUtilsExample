@@ -27,9 +27,10 @@ public class FieldDecl extends ASTList {
 
     public Declarator getDeclarator() { return (Declarator)tail().head(); }
 
-    public ASTree getInit() { return (ASTree)sublist(2).head(); }
+    public ASTree getInit() { return sublist(2).head(); }
 
-    public void accept(Visitor v) throws CompileError {
+    @Override
+	public void accept(Visitor v) throws CompileError {
         v.atFieldDecl(this);
     }
 }

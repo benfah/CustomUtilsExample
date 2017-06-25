@@ -30,7 +30,9 @@ public class StringL extends ASTree {
 
     public String get() { return text; }
 
-    public String toString() { return "\"" + text + "\""; }
+    @Override
+	public String toString() { return "\"" + text + "\""; }
 
-    public void accept(Visitor v) throws CompileError { v.atStringL(this); }
+    @Override
+	public void accept(Visitor v) throws CompileError { v.atStringL(this); }
 }

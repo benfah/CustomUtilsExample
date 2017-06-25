@@ -38,5 +38,6 @@ public class BinExpr extends Expr {
         return new BinExpr(op, oprand1, new ASTList(oprand2));
     }
 
-    public void accept(Visitor v) throws CompileError { v.atBinExpr(this); }
+    @Override
+	public void accept(Visitor v) throws CompileError { v.atBinExpr(this); }
 }

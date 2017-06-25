@@ -105,7 +105,8 @@ public class Reflection implements Translator {
     /**
      * Initializes the object.
      */
-    public void start(ClassPool pool) throws NotFoundException {
+    @Override
+	public void start(ClassPool pool) throws NotFoundException {
         classPool = pool;
         final String msg
             = "javassist.tools.reflect.Sample is not found or broken.";
@@ -130,7 +131,8 @@ public class Reflection implements Translator {
      * Inserts hooks for intercepting accesses to the fields declared
      * in reflective classes.
      */
-    public void onLoad(ClassPool pool, String classname)
+    @Override
+	public void onLoad(ClassPool pool, String classname)
         throws CannotCompileException, NotFoundException
     {
         CtClass clazz = pool.get(classname);

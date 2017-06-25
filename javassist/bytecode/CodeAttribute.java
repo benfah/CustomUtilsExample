@@ -21,7 +21,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -130,7 +129,8 @@ public class CodeAttribute extends AttributeInfo implements Opcode {
      *
      * @return <code>CodeAttribute</code> object.
      */
-    public AttributeInfo copy(ConstPool newCp, Map classnames)
+    @Override
+	public AttributeInfo copy(ConstPool newCp, Map classnames)
         throws RuntimeCopyException
     {
         try {
@@ -159,12 +159,14 @@ public class CodeAttribute extends AttributeInfo implements Opcode {
      * structure.
      * The returned value is <code>attribute_length + 6</code>.
      */
-    public int length() {
+    @Override
+	public int length() {
         return 18 + info.length + exceptions.size() * 8
                + AttributeInfo.getLength(attributes);
     }
 
-    void write(DataOutputStream out) throws IOException {
+    @Override
+	void write(DataOutputStream out) throws IOException {
         out.writeShort(name);           // attribute_name_index
         out.writeInt(length() - 6);     // attribute_length
         out.writeShort(maxStack);       // max_stack
@@ -181,7 +183,8 @@ public class CodeAttribute extends AttributeInfo implements Opcode {
      *
      * @throws java.lang.UnsupportedOperationException  always thrown.
      */
-    public byte[] get() { 
+    @Override
+	public byte[] get() { 
         throw new UnsupportedOperationException("CodeAttribute.get()");
     }
 
@@ -190,19 +193,23 @@ public class CodeAttribute extends AttributeInfo implements Opcode {
      *
      * @throws java.lang.UnsupportedOperationException  always thrown.
      */
-    public void set(byte[] newinfo) {
+    @Override
+	public void set(byte[] newinfo) {
         throw new UnsupportedOperationException("CodeAttribute.set()");
     }
 
-    void renameClass(String oldname, String newname) {
+    @Override
+	void renameClass(String oldname, String newname) {
         AttributeInfo.renameClass(attributes, oldname, newname);
     }
 
-    void renameClass(Map classnames) {
+    @Override
+	void renameClass(Map classnames) {
         AttributeInfo.renameClass(attributes, classnames);
     }
 
-    void getRefClasses(Map classnames) {
+    @Override
+	void getRefClasses(Map classnames) {
         AttributeInfo.getRefClasses(attributes, classnames);
     }
 

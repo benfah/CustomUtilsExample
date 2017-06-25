@@ -627,7 +627,8 @@ public class ProxyFactory {
      */
     public static ClassLoaderProvider classLoaderProvider
         = new ClassLoaderProvider() {
-              public ClassLoader get(ProxyFactory pf) {
+              @Override
+			public ClassLoader get(ProxyFactory pf) {
                   return pf.getClassLoader0();
               }
           };
@@ -710,7 +711,8 @@ public class ProxyFactory {
      * for each newly created  proxy instance.
      * calling this method will automatically disable caching of classes created by the proxy factory.
      */
-    public void setHandler(MethodHandler mi) {
+    @Deprecated
+	public void setHandler(MethodHandler mi) {
         // if we were using the cache and the handler is non-null then we must stop caching
         if (factoryUseCache && mi != null)  {
             factoryUseCache = false;
@@ -746,7 +748,8 @@ public class ProxyFactory {
         private final String sep = "_$$_jvst" + Integer.toHexString(this.hashCode() & 0xfff) + "_";
         private int counter = 0;
 
-        public String get(String classname) {
+        @Override
+		public String get(String classname) {
             return classname + sep + Integer.toHexString(counter++);
         }
     };
@@ -836,7 +839,8 @@ public class ProxyFactory {
 
     private static Comparator sorter = new Comparator() {
 
-        public int compare(Object o1, Object o2) {
+        @Override
+		public int compare(Object o1, Object o2) {
             Map.Entry e1 = (Map.Entry)o1;
             Map.Entry e2 = (Map.Entry)o2;
             String key1 = (String)e1.getKey();
@@ -961,7 +965,7 @@ public class ProxyFactory {
 
         code.addLconst(SERIAL_VERSION_UID_VALUE);
         code.addPutstatic(classname, SERIAL_VERSION_UID_FIELD, SERIAL_VERSION_UID_TYPE);
-        code.addOpcode(Bytecode.RETURN);
+        code.addOpcode(Opcode.RETURN);
         minfo.setCodeAttribute(code.toCodeAttribute());
         cf.addMethod(minfo);
     }
@@ -998,7 +1002,7 @@ public class ProxyFactory {
         code.addAload(0);
         code.addAload(1);
         code.addPutfield(classname, HANDLER, HANDLER_TYPE);
-        code.addOpcode(Bytecode.RETURN);
+        code.addOpcode(Opcode.RETURN);
         minfo.setCodeAttribute(code.toCodeAttribute());
         cf.addMethod(minfo);
     }
@@ -1012,7 +1016,7 @@ public class ProxyFactory {
         Bytecode code = new Bytecode(cp, 1, 1);
         code.addAload(0);
         code.addGetfield(classname, HANDLER, HANDLER_TYPE);
-        code.addOpcode(Bytecode.ARETURN);
+        code.addOpcode(Opcode.ARETURN);
         minfo.setCodeAttribute(code.toCodeAttribute());
         cf.addMethod(minfo);
     }

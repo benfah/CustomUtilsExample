@@ -104,7 +104,8 @@ public class AnnotationDefaultAttribute extends AttributeInfo {
     /**
      * Copies this attribute and returns a new copy.
      */
-    public AttributeInfo copy(ConstPool newCp, Map classnames) {
+    @Override
+	public AttributeInfo copy(ConstPool newCp, Map classnames) {
         AnnotationsAttribute.Copier copier
             = new AnnotationsAttribute.Copier(info, constPool, newCp, classnames);
         try {
@@ -154,7 +155,8 @@ public class AnnotationDefaultAttribute extends AttributeInfo {
     /**
      * Returns a string representation of this object.
      */
-    public String toString() {
+    @Override
+	public String toString() {
         return getDefaultValue().toString();
     }
 }

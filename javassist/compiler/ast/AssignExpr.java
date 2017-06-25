@@ -35,7 +35,8 @@ public class AssignExpr extends Expr {
         return new AssignExpr(op, oprand1, new ASTList(oprand2));
     }
 
-    public void accept(Visitor v) throws CompileError {
+    @Override
+	public void accept(Visitor v) throws CompileError {
         v.atAssignExpr(this);
     }
 }

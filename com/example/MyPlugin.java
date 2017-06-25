@@ -1,12 +1,12 @@
 package com.example;
 
-import java.lang.reflect.InvocationTargetException;
-
+import org.bukkit.Bukkit;
 import org.bukkit.Nameable;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,15 +22,24 @@ public class MyPlugin extends JavaPlugin
 	public static final WirecoilItem wirecoilItem = new WirecoilItem();
 	@Override
 	public void onEnable() {
-		this.instance = this;
+		MyPlugin.instance = this;
 		
 		try {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		NMSUtils.registerEntity("cable_bat", Type.BAT, JavassistBat.toClass(), false);
+		Bukkit.getScheduler().runTaskTimer(this, new TickRunnable(), 20, 20);
 		CustomRegistry.registerBlock(rfMachine, this);
 		CustomRegistry.registerItem(wirecoilItem, this);
+		
+
+	}
+	
+	@Override
+	public void onLoad()
+	{
+		
+		NMSUtils.registerEntity("cable_bat", Type.BAT, JavassistBat.toClass(), false);
 
 	}
 	
@@ -39,7 +48,7 @@ public class MyPlugin extends JavaPlugin
 		if(label.equalsIgnoreCase("lolx"))
 		if(args.length == 0)	
 		((Player)sender).getInventory().addItem(wirecoilItem.getItem());
-		if(args[0].equalsIgnoreCase("rm"))
+		if(args.length == 0 && args[0].equalsIgnoreCase("rm"))
 		for(Entity ent : ((Player)sender).getWorld().getEntities())
 		{
 			if(ent instanceof Nameable)
@@ -55,6 +64,14 @@ public class MyPlugin extends JavaPlugin
 				}
 			}
 		}
+		
+		
+		if((args.length > 0) && args[0].equalsIgnoreCase("inject"))
+		{
+			((CraftPlayer)sender).getHandle().playerConnection = new CustomPlayerConnection(((CraftServer)Bukkit.getServer()).getServer(), ((CraftPlayer)sender).getHandle().playerConnection.networkManager, ((CraftPlayer)sender).getHandle());
+		}
+		
+		
 		return super.onCommand(sender, command, label, args);
 	}
 }

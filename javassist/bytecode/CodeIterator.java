@@ -1341,7 +1341,8 @@ public class CodeIterator implements Opcode {
             state = true;
         }
 
-        boolean expanded() {
+        @Override
+		boolean expanded() {
             if (state) {
                 state = false;
                 return true;
@@ -1350,9 +1351,11 @@ public class CodeIterator implements Opcode {
                 return false;
         }
 
-        int deltaSize() { return 1; }
+        @Override
+		int deltaSize() { return 1; }
 
-        int write(int srcPos, byte[] code, int destPos, byte[] newcode) {
+        @Override
+		int write(int srcPos, byte[] code, int destPos, byte[] newcode) {
             newcode[destPos] = LDC_W;
             ByteArray.write16bit(index, newcode, destPos + 1);
             return 2;
@@ -1372,7 +1375,8 @@ public class CodeIterator implements Opcode {
             state = BIT16;
         }
 
-        void shift(int where, int gapLength, boolean exclusive) {
+        @Override
+		void shift(int where, int gapLength, boolean exclusive) {
             offset = shiftOffset(pos, offset, where, gapLength, exclusive);
             super.shift(where, gapLength, exclusive);
             if (state == BIT16)
@@ -1380,7 +1384,8 @@ public class CodeIterator implements Opcode {
                     state = EXPAND;
         }
 
-        boolean expanded() {
+        @Override
+		boolean expanded() {
             if (state == EXPAND) {
                 state = BIT32;
                 return true;
@@ -1389,10 +1394,12 @@ public class CodeIterator implements Opcode {
                 return false;
         }
 
-        abstract int deltaSize();
+        @Override
+		abstract int deltaSize();
         abstract void write32(int src, byte[] code, int dest, byte[] newcode);
 
-        int write(int src, byte[] code, int dest, byte[] newcode) {
+        @Override
+		int write(int src, byte[] code, int dest, byte[] newcode) {
             if (state == BIT32)
                 write32(src, code, dest, newcode);
             else {
@@ -1410,11 +1417,13 @@ public class CodeIterator implements Opcode {
             super(p, off);
         }
 
-        int deltaSize() {
+        @Override
+		int deltaSize() {
             return state == BIT32 ? 2 : 0;
         }
 
-        void write32(int src, byte[] code, int dest, byte[] newcode) {
+        @Override
+		void write32(int src, byte[] code, int dest, byte[] newcode) {
             newcode[dest] = (byte)(((code[src] & 0xff) == GOTO) ? GOTO_W : JSR_W);
             ByteArray.write32bit(offset, newcode, dest + 1);
         }
@@ -1426,11 +1435,13 @@ public class CodeIterator implements Opcode {
             super(p, off);
         }
 
-        int deltaSize() {
+        @Override
+		int deltaSize() {
             return state == BIT32 ? 5 : 0;
         }
 
-        void write32(int src, byte[] code, int dest, byte[] newcode) {
+        @Override
+		void write32(int src, byte[] code, int dest, byte[] newcode) {
             newcode[dest] = (byte)opcode(code[src] & 0xff);
             newcode[dest + 1] = 0;
             newcode[dest + 2] = 8;  // branch_offset = 8
@@ -1460,12 +1471,14 @@ public class CodeIterator implements Opcode {
             offset = off;
         }
 
-        void shift(int where, int gapLength, boolean exclusive) {
+        @Override
+		void shift(int where, int gapLength, boolean exclusive) {
             offset = shiftOffset(pos, offset, where, gapLength, exclusive);
             super.shift(where, gapLength, exclusive);
         }
 
-        int write(int src, byte[] code, int dest, byte[] newcode) {
+        @Override
+		int write(int src, byte[] code, int dest, byte[] newcode) {
             newcode[dest] = code[src];
             ByteArray.write32bit(offset, newcode, dest + 1);
             return 5;
@@ -1485,7 +1498,8 @@ public class CodeIterator implements Opcode {
             this.pointers = ptrs;
         }
 
-        void shift(int where, int gapLength, boolean exclusive) {
+        @Override
+		void shift(int where, int gapLength, boolean exclusive) {
             int p = pos;
             defaultByte = shiftOffset(p, defaultByte, where, gapLength, exclusive);
             int num = offsets.length;
@@ -1495,7 +1509,8 @@ public class CodeIterator implements Opcode {
             super.shift(where, gapLength, exclusive);
         }
 
-        int gapChanged() {
+        @Override
+		int gapChanged() {
             int newGap = 3 - (pos & 3);
             if (newGap > gap) {
                 int diff = newGap - gap;
@@ -1506,11 +1521,13 @@ public class CodeIterator implements Opcode {
             return 0;
         }
 
-        int deltaSize() {
+        @Override
+		int deltaSize() {
             return gap - (3 - (orgPos & 3));
         }
 
-        int write(int src, byte[] code, int dest, byte[] newcode) throws BadBytecode {
+        @Override
+		int write(int src, byte[] code, int dest, byte[] newcode) throws BadBytecode {
             int padding = 3 - (pos & 3);
             int nops = gap - padding;
             int bytecodeSize = 5 + (3 - (orgPos & 3)) + tableSize();
@@ -1562,7 +1579,8 @@ public class CodeIterator implements Opcode {
             this.high = high;
         }
 
-        int write2(int dest, byte[] newcode) {
+        @Override
+		int write2(int dest, byte[] newcode) {
             ByteArray.write32bit(low, newcode, dest);
             ByteArray.write32bit(high, newcode, dest + 4);
             int n = offsets.length;
@@ -1575,7 +1593,8 @@ public class CodeIterator implements Opcode {
             return 8 + 4 * n;
         }
 
-        int tableSize() { return 8 + 4 * offsets.length; }
+        @Override
+		int tableSize() { return 8 + 4 * offsets.length; }
     }
 
     static class Lookup extends Switcher {
@@ -1586,7 +1605,8 @@ public class CodeIterator implements Opcode {
             this.matches = matches;
         }
 
-        int write2(int dest, byte[] newcode) {
+        @Override
+		int write2(int dest, byte[] newcode) {
             int n = matches.length;
             ByteArray.write32bit(n, newcode, dest);
             dest += 4;
@@ -1599,6 +1619,7 @@ public class CodeIterator implements Opcode {
             return 4 + 8 * n;
         }
 
-        int tableSize() { return 4 + 8 * matches.length; }
+        @Override
+		int tableSize() { return 4 + 8 * matches.length; }
     }
 }

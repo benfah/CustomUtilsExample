@@ -120,7 +120,8 @@ public class Javac {
 
         protected void setInit(ASTree i) { init = i; }
 
-        protected ASTree getInitAST() {
+        @Override
+		protected ASTree getInitAST() {
             return init;
         }
     }
@@ -437,7 +438,8 @@ public class Javac {
         final String m = method;
 
         ProceedHandler h = new ProceedHandler() {
-                public void doit(JvstCodeGen gen, Bytecode b, ASTList args)
+                @Override
+				public void doit(JvstCodeGen gen, Bytecode b, ASTList args)
                     throws CompileError
                 {
                     ASTree expr = new Member(m);
@@ -449,7 +451,8 @@ public class Javac {
                     gen.addNullIfVoid();
                 }
 
-                public void setReturnType(JvstTypeChecker check, ASTList args)
+                @Override
+				public void setReturnType(JvstTypeChecker check, ASTList args)
                     throws CompileError
                 {
                     ASTree expr = new Member(m);
@@ -481,7 +484,8 @@ public class Javac {
         final String m = method;
 
         ProceedHandler h = new ProceedHandler() {
-                public void doit(JvstCodeGen gen, Bytecode b, ASTList args)
+                @Override
+				public void doit(JvstCodeGen gen, Bytecode b, ASTList args)
                     throws CompileError
                 {
                     Expr expr = Expr.make(TokenId.MEMBER,
@@ -491,7 +495,8 @@ public class Javac {
                     gen.addNullIfVoid();
                 }
 
-                public void setReturnType(JvstTypeChecker check, ASTList args)
+                @Override
+				public void setReturnType(JvstTypeChecker check, ASTList args)
                     throws CompileError
                 {
                     Expr expr = Expr.make(TokenId.MEMBER,
@@ -525,13 +530,15 @@ public class Javac {
         final ASTree texpr = p.parseExpression(stable);
 
         ProceedHandler h = new ProceedHandler() {
-                public void doit(JvstCodeGen gen, Bytecode b, ASTList args)
+                @Override
+				public void doit(JvstCodeGen gen, Bytecode b, ASTList args)
                     throws CompileError
                 {
                     gen.compileInvokeSpecial(texpr, methodIndex, descriptor, args);
                 }
 
-                public void setReturnType(JvstTypeChecker c, ASTList args)
+                @Override
+				public void setReturnType(JvstTypeChecker c, ASTList args)
                     throws CompileError
                 {
                     c.compileInvokeSpecial(texpr, classname, methodname, descriptor, args);

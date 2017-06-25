@@ -28,9 +28,10 @@ class ByteVector implements Cloneable {
         size = 0;
     }
 
-    public Object clone() throws CloneNotSupportedException {
+    @Override
+	public Object clone() throws CloneNotSupportedException {
         ByteVector bv = (ByteVector)super.clone();
-        bv.buffer = (byte[])buffer.clone();
+        bv.buffer = buffer.clone();
         return bv;
     }
 
@@ -164,7 +165,8 @@ public class Bytecode extends ByteVector implements Cloneable, Opcode {
      * The constant pool object is shared between this object
      * and the cloned object.
      */
-    public Object clone() {
+    @Override
+	public Object clone() {
         try {
             Bytecode bc = (Bytecode)super.clone();
             bc.tryblocks = (ExceptionTable)tryblocks.clone();
@@ -325,7 +327,8 @@ public class Bytecode extends ByteVector implements Cloneable, Opcode {
      *
      * @throws ArrayIndexOutOfBoundsException   if offset is invalid.
      */
-    public int read(int offset) {
+    @Override
+	public int read(int offset) {
         return super.read(offset);
     }
 
@@ -355,7 +358,8 @@ public class Bytecode extends ByteVector implements Cloneable, Opcode {
      *
      * @throws ArrayIndexOutOfBoundsException   if offset is invalid.
      */
-    public void write(int offset, int value) {
+    @Override
+	public void write(int offset, int value) {
         super.write(offset, value);
     }
 
@@ -380,7 +384,8 @@ public class Bytecode extends ByteVector implements Cloneable, Opcode {
     /**
      * Appends an 8bit value to the end of the bytecode sequence.
      */
-    public void add(int code) {
+    @Override
+	public void add(int code) {
         super.add(code);
     }
 
@@ -396,7 +401,8 @@ public class Bytecode extends ByteVector implements Cloneable, Opcode {
      *
      * @param length    the gap length in byte.
      */
-    public void addGap(int length) {
+    @Override
+	public void addGap(int length) {
         super.addGap(length);
     }
 

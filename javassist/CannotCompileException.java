@@ -28,7 +28,8 @@ public class CannotCompileException extends Exception {
      * Gets the cause of this throwable.
      * It is for JDK 1.3 compatibility.
      */
-    public Throwable getCause() {
+    @Override
+	public Throwable getCause() {
         return (myCause == this ? null : myCause);
     }
 
@@ -36,7 +37,8 @@ public class CannotCompileException extends Exception {
      * Initializes the cause of this throwable.
      * It is for JDK 1.3 compatibility.
      */
-    public synchronized Throwable initCause(Throwable cause) {
+    @Override
+	public synchronized Throwable initCause(Throwable cause) {
         myCause = cause;
         return this;
     }

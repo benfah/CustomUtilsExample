@@ -44,7 +44,8 @@ public class JvstTypeChecker extends TypeChecker {
     /* To support $args, $sig, and $type.
      * $args is an array of parameter list.
      */
-    public void atMember(Member mem) throws CompileError {
+    @Override
+	public void atMember(Member mem) throws CompileError {
         String name = mem.get();
         if (name.equals(codeGen.paramArrayName)) {
             exprType = CLASS;
@@ -66,7 +67,8 @@ public class JvstTypeChecker extends TypeChecker {
             super.atMember(mem);
     }
 
-    protected void atFieldAssign(Expr expr, int op, ASTree left, ASTree right)
+    @Override
+	protected void atFieldAssign(Expr expr, int op, ASTree left, ASTree right)
         throws CompileError
     {
         if (left instanceof Member
@@ -84,7 +86,8 @@ public class JvstTypeChecker extends TypeChecker {
             super.atFieldAssign(expr, op, left, right);
     }
 
-    public void atCastExpr(CastExpr expr) throws CompileError {
+    @Override
+	public void atCastExpr(CastExpr expr) throws CompileError {
         ASTList classname = expr.getClassName();
         if (classname != null && expr.getArrayDim() == 0) {
             ASTree p = classname.head();
@@ -138,7 +141,8 @@ public class JvstTypeChecker extends TypeChecker {
     /* Delegates to a ProcHandler object if the method call is
      * $proceed().  It may process $cflow().
      */
-    public void atCallExpr(CallExpr expr) throws CompileError {
+    @Override
+	public void atCallExpr(CallExpr expr) throws CompileError {
         ASTree method = expr.oprand1();
         if (method instanceof Member) {
             String name = ((Member)method).get();
@@ -179,7 +183,8 @@ public class JvstTypeChecker extends TypeChecker {
             return false;
     }
 
-    public int getMethodArgsLength(ASTList args) {
+    @Override
+	public int getMethodArgsLength(ASTList args) {
         String pname = codeGen.paramListName;
         int n = 0;
         while (args != null) {
@@ -197,7 +202,8 @@ public class JvstTypeChecker extends TypeChecker {
         return n;
     }
 
-    public void atMethodArgs(ASTList args, int[] types, int[] dims,
+    @Override
+	public void atMethodArgs(ASTList args, int[] types, int[] dims,
                                 String[] cnames) throws CompileError {
         CtClass[] params = codeGen.paramTypeList;
         String pname = codeGen.paramListName;

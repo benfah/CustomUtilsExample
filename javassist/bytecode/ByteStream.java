@@ -38,17 +38,20 @@ final class ByteStream extends OutputStream {
         count += len;
     }
 
-    public void write(byte[] data) {
+    @Override
+	public void write(byte[] data) {
         write(data, 0, data.length);
     }
 
-    public void write(byte[] data, int off, int len) {
+    @Override
+	public void write(byte[] data, int off, int len) {
         enlarge(len);
         System.arraycopy(data, off, buf, count, len);
         count += len;
     }
 
-    public void write(int b) {
+    @Override
+	public void write(int b) {
         enlarge(1);
         int oldCount = count;
         buf[oldCount] = (byte)b;

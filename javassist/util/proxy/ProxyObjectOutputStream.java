@@ -44,7 +44,8 @@ public class ProxyObjectOutputStream extends ObjectOutputStream
         super(out);
     }
 
-    protected void writeClassDescriptor(ObjectStreamClass desc) throws IOException {
+    @Override
+	protected void writeClassDescriptor(ObjectStreamClass desc) throws IOException {
         Class cl = desc.forClass();
         if (ProxyFactory.isProxyClass(cl)) {
             writeBoolean(true);

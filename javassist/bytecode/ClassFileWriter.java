@@ -18,7 +18,6 @@ package javassist.bytecode;
 
 import java.io.OutputStream;
 import java.io.DataOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 /**

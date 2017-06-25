@@ -109,7 +109,8 @@ public class SerialVersionUID {
             // fields.
             CtField[] fields = clazz.getDeclaredFields();
             Arrays.sort(fields, new Comparator() {
-                public int compare(Object o1, Object o2) {
+                @Override
+				public int compare(Object o1, Object o2) {
                     CtField field1 = (CtField)o1;
                     CtField field2 = (CtField)o2;
                     return field1.getName().compareTo(field2.getName());
@@ -117,7 +118,7 @@ public class SerialVersionUID {
             });
 
             for (int i = 0; i < fields.length; i++) {
-                CtField field = (CtField) fields[i]; 
+                CtField field = fields[i]; 
                 int mods = field.getModifiers();
                 if (((mods & Modifier.PRIVATE) == 0) ||
                     ((mods & (Modifier.STATIC | Modifier.TRANSIENT)) == 0)) {
@@ -137,7 +138,8 @@ public class SerialVersionUID {
             // constructors.
             CtConstructor[] constructors = clazz.getDeclaredConstructors();
             Arrays.sort(constructors, new Comparator() {
-                public int compare(Object o1, Object o2) {
+                @Override
+				public int compare(Object o1, Object o2) {
                     CtConstructor c1 = (CtConstructor)o1;
                     CtConstructor c2 = (CtConstructor)o2;
                     return c1.getMethodInfo2().getDescriptor().compareTo(
@@ -158,7 +160,8 @@ public class SerialVersionUID {
 
             // methods.
             Arrays.sort(methods, new Comparator() {
-                public int compare(Object o1, Object o2) {
+                @Override
+				public int compare(Object o1, Object o2) {
                     CtMethod m1 = (CtMethod)o1;
                     CtMethod m2 = (CtMethod)o2;
                     int value = m1.getName().compareTo(m2.getName());

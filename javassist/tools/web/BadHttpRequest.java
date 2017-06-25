@@ -26,7 +26,8 @@ public class BadHttpRequest extends Exception {
 
     public BadHttpRequest(Exception _e) { e = _e; }
 
-    public String toString() {
+    @Override
+	public String toString() {
         if (e == null)
             return super.toString();
         else

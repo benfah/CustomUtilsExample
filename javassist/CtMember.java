@@ -29,21 +29,34 @@ public abstract class CtMember {
      * at the same time.
      */
     static class Cache extends CtMember {
-        protected void extendToString(StringBuffer buffer) {}
-        public boolean hasAnnotation(String clz) { return false; }
-        public Object getAnnotation(Class clz)
+        @Override
+		protected void extendToString(StringBuffer buffer) {}
+        @Override
+		public boolean hasAnnotation(String clz) { return false; }
+        @Override
+		public Object getAnnotation(Class clz)
             throws ClassNotFoundException { return null; }
-        public Object[] getAnnotations()
+        @Override
+		public Object[] getAnnotations()
             throws ClassNotFoundException { return null; }
-        public byte[] getAttribute(String name) { return null; }
-        public Object[] getAvailableAnnotations() { return null; }
-        public int getModifiers() { return 0; }
-        public String getName() { return null; }
-        public String getSignature() { return null; }
-        public void setAttribute(String name, byte[] data) {}
-        public void setModifiers(int mod) {}
-        public String getGenericSignature() { return null; }
-        public void setGenericSignature(String sig) {}
+        @Override
+		public byte[] getAttribute(String name) { return null; }
+        @Override
+		public Object[] getAvailableAnnotations() { return null; }
+        @Override
+		public int getModifiers() { return 0; }
+        @Override
+		public String getName() { return null; }
+        @Override
+		public String getSignature() { return null; }
+        @Override
+		public void setAttribute(String name, byte[] data) {}
+        @Override
+		public void setModifiers(int mod) {}
+        @Override
+		public String getGenericSignature() { return null; }
+        @Override
+		public void setGenericSignature(String sig) {}
 
         private CtMember methodTail;
         private CtMember consTail;     // constructor tail
@@ -141,7 +154,8 @@ public abstract class CtMember {
      */
     void nameReplaced() {}
 
-    public String toString() {
+    @Override
+	public String toString() {
         StringBuffer buffer = new StringBuffer(getClass().getName());
         buffer.append("@");
         buffer.append(Integer.toHexString(hashCode()));

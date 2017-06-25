@@ -47,7 +47,8 @@ public final class CtPrimitiveType extends CtClass {
      * Java type: boolean, byte, char, short, int, long, float, double,
      * or void.
      */
-    public boolean isPrimitive() { return true; }
+    @Override
+	public boolean isPrimitive() { return true; }
 
     /**
      * Returns the modifiers for this type.
@@ -55,7 +56,8 @@ public final class CtPrimitiveType extends CtClass {
      *
      * @see Modifier
      */
-    public int getModifiers() {
+    @Override
+	public int getModifiers() {
         return Modifier.PUBLIC | Modifier.FINAL;
     }
 

@@ -132,7 +132,8 @@ public class ClassMap extends java.util.HashMap {
      * @see #toJvmName(String)
      * @see #toJavaName(String)
      */
-    public Object get(Object jvmClassName) {
+    @Override
+	public Object get(Object jvmClassName) {
         Object found = super.get(jvmClassName);
         if (found == null && parent != null)
             return parent.get(jvmClassName);

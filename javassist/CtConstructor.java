@@ -122,7 +122,8 @@ public final class CtConstructor extends CtBehavior {
      *
      * @since 3.5
      */
-    public String getLongName() {
+    @Override
+	public String getLongName() {
         return getDeclaringClass().getName()
                + (isConstructor() ? Descriptor.toString(getSignature())
                                   : ("." + MethodInfo.nameClinit + "()"));
@@ -134,7 +135,8 @@ public final class CtConstructor extends CtBehavior {
      * constructor.  If this object represents a class initializer,
      * then this method returns <code>"&lt;clinit&gt;"</code>.
      */
-    public String getName() {
+    @Override
+	public String getName() {
         if (methodInfo.isStaticInitializer())
             return MethodInfo.nameClinit;
         else
@@ -148,7 +150,8 @@ public final class CtConstructor extends CtBehavior {
      * calling <code>super()</code> (the no-argument constructor of
      * the super class).
      */
-    public boolean isEmpty() {
+    @Override
+	public boolean isEmpty() {
         CodeAttribute ca = getMethodInfo2().getCodeAttribute();
         if (ca == null)
             return false;       // native or abstract??
@@ -207,7 +210,8 @@ public final class CtConstructor extends CtBehavior {
      *                  constructor body does nothing except calling
      *                  <code>super()</code>.
      */
-    public void setBody(String src) throws CannotCompileException {
+    @Override
+	public void setBody(String src) throws CannotCompileException {
         if (src == null)
             if (isClassInitializer())
                 src = ";";
@@ -280,7 +284,8 @@ public final class CtConstructor extends CtBehavior {
     /* This method is called by addCatch() in CtBehavior.
      * super() and this() must not be in a try statement.
      */
-    int getStartPosOfBody(CodeAttribute ca) throws CannotCompileException {
+    @Override
+	int getStartPosOfBody(CodeAttribute ca) throws CannotCompileException {
         CodeIterator ci = ca.iterator();
         try {
             ci.skipConstructor();

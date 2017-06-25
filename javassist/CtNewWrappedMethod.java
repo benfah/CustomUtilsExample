@@ -193,7 +193,7 @@ class CtNewWrappedMethod {
         }
         else {
             code.addCheckcast(type);
-            code.addOpcode(Bytecode.ARETURN);
+            code.addOpcode(Opcode.ARETURN);
         }
     }
 }

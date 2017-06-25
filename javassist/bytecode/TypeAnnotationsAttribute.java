@@ -57,7 +57,8 @@ public class TypeAnnotationsAttribute extends AttributeInfo {
     /**
      * Copies this attribute and returns a new copy.
      */
-    public AttributeInfo copy(ConstPool newCp, Map classnames) {
+    @Override
+	public AttributeInfo copy(ConstPool newCp, Map classnames) {
         Copier copier = new Copier(info, constPool, newCp, classnames);
         try {
             copier.annotationArray();
@@ -72,13 +73,15 @@ public class TypeAnnotationsAttribute extends AttributeInfo {
      * @param oldname       a JVM class name.
      * @param newname       a JVM class name.
      */
-    void renameClass(String oldname, String newname) {
+    @Override
+	void renameClass(String oldname, String newname) {
         HashMap map = new HashMap();
         map.put(oldname, newname);
         renameClass(map);
     }
 
-    void renameClass(Map classnames) {
+    @Override
+	void renameClass(Map classnames) {
         Renamer renamer = new Renamer(info, getConstPool(), classnames);
         try {
             renamer.annotationArray();
@@ -87,7 +90,8 @@ public class TypeAnnotationsAttribute extends AttributeInfo {
         }
     }
 
-    void getRefClasses(Map classnames) { renameClass(classnames); }
+    @Override
+	void getRefClasses(Map classnames) { renameClass(classnames); }
 
     /**
      * To visit each elements of the type annotation attribute,
@@ -103,7 +107,8 @@ public class TypeAnnotationsAttribute extends AttributeInfo {
             subWalker = new SubWalker(attrInfo);
         }
 
-        int annotationArray(int pos, int num) throws Exception {
+        @Override
+		int annotationArray(int pos, int num) throws Exception {
             for (int i = 0; i < num; i++) {
                 int targetType = info[pos] & 0xff;
                 pos = subWalker.targetInfo(pos + 1, targetType);
@@ -244,7 +249,8 @@ public class TypeAnnotationsAttribute extends AttributeInfo {
             sub = new SubWalker(attrInfo);
         }
 
-        int annotationArray(int pos, int num) throws Exception {
+        @Override
+		int annotationArray(int pos, int num) throws Exception {
             for (int i = 0; i < num; i++) {
                 int targetType = info[pos] & 0xff;
                 pos = sub.targetInfo(pos + 1, targetType);
@@ -266,7 +272,8 @@ public class TypeAnnotationsAttribute extends AttributeInfo {
             sub = new SubCopier(attrInfo, src, dest, map, w);
         }
 
-        int annotationArray(int pos, int num) throws Exception {
+        @Override
+		int annotationArray(int pos, int num) throws Exception {
             writer.numAnnotations(num);
             for (int i = 0; i < num; i++) {
                 int targetType = info[pos] & 0xff;
@@ -294,66 +301,79 @@ public class TypeAnnotationsAttribute extends AttributeInfo {
             writer = w;
         }
 
-        void typeParameterTarget(int pos, int targetType, int typeParameterIndex)
+        @Override
+		void typeParameterTarget(int pos, int targetType, int typeParameterIndex)
             throws Exception
         {
             writer.typeParameterTarget(targetType, typeParameterIndex);            
         }
 
-        void supertypeTarget(int pos, int superTypeIndex) throws Exception {
+        @Override
+		void supertypeTarget(int pos, int superTypeIndex) throws Exception {
             writer.supertypeTarget(superTypeIndex);
         }
 
-        void typeParameterBoundTarget(int pos, int targetType, int typeParameterIndex,
+        @Override
+		void typeParameterBoundTarget(int pos, int targetType, int typeParameterIndex,
                                       int boundIndex)
             throws Exception
         {
             writer.typeParameterBoundTarget(targetType, typeParameterIndex, boundIndex);
         }
 
-        void emptyTarget(int pos, int targetType) throws Exception {
+        @Override
+		void emptyTarget(int pos, int targetType) throws Exception {
             writer.emptyTarget(targetType);
         }
 
-        void formalParameterTarget(int pos, int formalParameterIndex) throws Exception {
+        @Override
+		void formalParameterTarget(int pos, int formalParameterIndex) throws Exception {
             writer.formalParameterTarget(formalParameterIndex);
         }
 
-        void throwsTarget(int pos, int throwsTypeIndex) throws Exception {
+        @Override
+		void throwsTarget(int pos, int throwsTypeIndex) throws Exception {
             writer.throwsTarget(throwsTypeIndex);
         }
 
-        int localvarTarget(int pos, int targetType, int tableLength) throws Exception {
+        @Override
+		int localvarTarget(int pos, int targetType, int tableLength) throws Exception {
             writer.localVarTarget(targetType, tableLength);
             return super.localvarTarget(pos, targetType, tableLength);
         }
 
-        void localvarTarget(int pos, int targetType, int startPc, int length, int index)
+        @Override
+		void localvarTarget(int pos, int targetType, int startPc, int length, int index)
             throws Exception
         {
             writer.localVarTargetTable(startPc, length, index);
         }
 
-        void catchTarget(int pos, int exceptionTableIndex) throws Exception {
+        @Override
+		void catchTarget(int pos, int exceptionTableIndex) throws Exception {
             writer.catchTarget(exceptionTableIndex);
         }
 
-        void offsetTarget(int pos, int targetType, int offset) throws Exception {
+        @Override
+		void offsetTarget(int pos, int targetType, int offset) throws Exception {
             writer.offsetTarget(targetType, offset);
         }
 
-        void typeArgumentTarget(int pos, int targetType, int offset, int typeArgumentIndex)
+        @Override
+		void typeArgumentTarget(int pos, int targetType, int offset, int typeArgumentIndex)
             throws Exception
         {
             writer.typeArgumentTarget(targetType, offset, typeArgumentIndex);
         }
 
-        int typePath(int pos, int pathLength) throws Exception {
+        @Override
+		int typePath(int pos, int pathLength) throws Exception {
             writer.typePath(pathLength);
             return super.typePath(pos, pathLength);
         }
 
-        void typePath(int pos, int typePathKind, int typeArgumentIndex) throws Exception {
+        @Override
+		void typePath(int pos, int typePathKind, int typeArgumentIndex) throws Exception {
             writer.typePathPath(typePathKind, typeArgumentIndex);
         }
     }

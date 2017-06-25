@@ -30,9 +30,11 @@ public class Pair extends ASTree {
         right = _right;
     }
 
-    public void accept(Visitor v) throws CompileError { v.atPair(this); }
+    @Override
+	public void accept(Visitor v) throws CompileError { v.atPair(this); }
 
-    public String toString() {
+    @Override
+	public String toString() {
         StringBuffer sbuf = new StringBuffer();
         sbuf.append("(<Pair> ");
         sbuf.append(left == null ? "<null>" : left.toString());
@@ -42,11 +44,15 @@ public class Pair extends ASTree {
         return sbuf.toString();
     }
 
-    public ASTree getLeft() { return left; }
+    @Override
+	public ASTree getLeft() { return left; }
 
-    public ASTree getRight() { return right; }
+    @Override
+	public ASTree getRight() { return right; }
 
-    public void setLeft(ASTree _left) { left = _left; }
+    @Override
+	public void setLeft(ASTree _left) { left = _left; }
 
-    public void setRight(ASTree _right) { right = _right; }
+    @Override
+	public void setRight(ASTree _right) { right = _right; }
 }

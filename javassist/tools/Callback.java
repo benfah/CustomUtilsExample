@@ -73,7 +73,8 @@ public abstract class Callback {
      */
     public abstract void result(Object[] objects);
 
-    public String toString(){
+    @Override
+	public String toString(){
         return sourceCode();
     }
 

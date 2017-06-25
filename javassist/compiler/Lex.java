@@ -249,11 +249,11 @@ public class Lex implements TokenId {
                 for (;;) {
                     c = getc();
                     if ('0' <= c && c <= '9')
-                        value = value * 16 + (long)(c - '0');
+                        value = value * 16 + c - '0';
                     else if ('A' <= c && c <= 'F')
-                        value = value * 16 + (long)(c - 'A' + 10);
+                        value = value * 16 + c - 'A' + 10;
                     else if ('a' <= c && c <= 'f')
-                        value = value * 16 + (long)(c - 'a' + 10);
+                        value = value * 16 + c - 'a' + 10;
                     else {
                         token.longValue = value;
                         if (c == 'L' || c == 'l')
@@ -269,7 +269,7 @@ public class Lex implements TokenId {
                 for (;;) {
                     c = getc();
                     if ('0' <= c && c <= '7')
-                        value = value * 8 + (long)(c - '0');
+                        value = value * 8 + c - '0';
                     else {
                         token.longValue = value;
                         if (c == 'L' || c == 'l')
@@ -290,7 +290,7 @@ public class Lex implements TokenId {
 
         token.longValue = value;
         if (c2 == 'F' || c2 == 'f') {
-            token.doubleValue = (double)value;
+            token.doubleValue = value;
             return FloatConstant;
         }
         else if (c2 == 'E' || c2 == 'e'

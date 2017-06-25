@@ -63,7 +63,8 @@ public class ProxyObjectInputStream extends ObjectInputStream
         }
     }
 
-    protected ObjectStreamClass readClassDescriptor() throws IOException, ClassNotFoundException {
+    @Override
+	protected ObjectStreamClass readClassDescriptor() throws IOException, ClassNotFoundException {
         boolean isProxy = readBoolean();
         if (isProxy) {
             String name = (String)readObject();

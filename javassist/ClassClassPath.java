@@ -19,8 +19,6 @@ package javassist;
 import java.io.InputStream;
 import java.net.URL;
 
-import javassist.bytecode.ClassFile;
-
 /**
  * A search-path for obtaining a class file
  * by <code>getResourceAsStream()</code> in <code>java.lang.Class</code>.
@@ -76,7 +74,8 @@ public class ClassClassPath implements ClassPath {
     /**
      * Obtains a class file by <code>getResourceAsStream()</code>.
      */
-    public InputStream openClassfile(String classname) throws NotFoundException {
+    @Override
+	public InputStream openClassfile(String classname) throws NotFoundException {
         String filename = '/' + classname.replace('.', '/') + ".class";
         return thisClass.getResourceAsStream(filename);
     }
@@ -86,7 +85,8 @@ public class ClassClassPath implements ClassPath {
      *
      * @return null if the class file could not be found. 
      */
-    public URL find(String classname) {
+    @Override
+	public URL find(String classname) {
         String filename = '/' + classname.replace('.', '/') + ".class";
         return thisClass.getResource(filename);
     }
@@ -94,10 +94,12 @@ public class ClassClassPath implements ClassPath {
     /**
      * Does nothing.
      */
-    public void close() {
+    @Override
+	public void close() {
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return thisClass.getName() + ".class";
     }
 }

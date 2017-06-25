@@ -68,7 +68,8 @@ public class StubGenerator implements Translator {
      *
      * @see javassist.Translator#start(ClassPool)
      */
-    public void start(ClassPool pool) throws NotFoundException {
+    @Override
+	public void start(ClassPool pool) throws NotFoundException {
         classPool = pool;
         CtClass c = pool.get(sampleClass);
         forwardMethod = c.getDeclaredMethod("forward");
@@ -89,7 +90,8 @@ public class StubGenerator implements Translator {
      * This is a method declared in javassist.Translator.
      * @see javassist.Translator#onLoad(ClassPool,String)
      */
-    public void onLoad(ClassPool pool, String classname) {}
+    @Override
+	public void onLoad(ClassPool pool, String classname) {}
 
     /**
      * Returns <code>true</code> if the specified class is a proxy class

@@ -18,7 +18,6 @@ package javassist.bytecode.stackmap;
 
 import java.util.ArrayList;
 import javassist.ClassPool;
-import javassist.CtClass;
 import javassist.NotFoundException;
 import javassist.bytecode.*;
 
@@ -350,9 +349,9 @@ public class MapMaker extends Tracer {
         if (len < 0) {
             // if the dead-code length is shorter than 3 bytes.
             if (len == -1)
-                code[pos] = Bytecode.NOP;
+                code[pos] = Opcode.NOP;
 
-            code[pos + block.length - 1] = (byte)Bytecode.ATHROW;
+            code[pos + block.length - 1] = (byte)Opcode.ATHROW;
             block.incoming = 1;
             recordStackMap(block, 0);
             return;
@@ -363,9 +362,9 @@ public class MapMaker extends Tracer {
         block.incoming = 0;
 
         for (int k = 0; k < len; k++) 
-            code[pos + k] = Bytecode.NOP;
+            code[pos + k] = Opcode.NOP;
 
-        code[pos + len] = (byte)Bytecode.GOTO;
+        code[pos + len] = (byte)Opcode.GOTO;
         ByteArray.write16bit(-len, code, pos + len + 1);
     }
 

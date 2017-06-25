@@ -16,7 +16,6 @@
 package javassist.convert;
 
 import javassist.CannotCompileException;
-import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.NotFoundException;
 import javassist.CodeConverter.ArrayAccessReplacementMethodNames;
@@ -49,7 +48,8 @@ public final class TransformAccessArrayField extends Transformer {
 
     }
 
-    public void initialize(ConstPool cp, CtClass clazz, MethodInfo minfo) throws CannotCompileException {
+    @Override
+	public void initialize(ConstPool cp, CtClass clazz, MethodInfo minfo) throws CannotCompileException {
         /*
          * This transformer must be isolated from other transformers, since some
          * of them affect the local variable and stack maximums without updating
@@ -85,12 +85,14 @@ public final class TransformAccessArrayField extends Transformer {
         }
     }
 
-    public void clean() {
+    @Override
+	public void clean() {
         frames = null;
         offset = -1;
     }
 
-    public int transform(CtClass tclazz, int pos, CodeIterator iterator,
+    @Override
+	public int transform(CtClass tclazz, int pos, CodeIterator iterator,
             ConstPool cp) throws BadBytecode {
         // Do nothing, see above comment
         return pos;

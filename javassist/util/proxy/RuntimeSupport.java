@@ -31,7 +31,8 @@ public class RuntimeSupport {
     public static MethodHandler default_interceptor = new DefaultMethodHandler();
 
     static class DefaultMethodHandler implements MethodHandler, Serializable {
-        public Object invoke(Object self, Method m,
+        @Override
+		public Object invoke(Object self, Method m,
                              Method proceed, Object[] args)
             throws Exception
         {
@@ -65,7 +66,8 @@ public class RuntimeSupport {
      * @see javassist.util.proxy.ProxyFactory
      * @deprecated replaced by {@link #find2Methods(Class, String, String, int, String, Method[])}
      */
-    public static void find2Methods(Object self, String superMethod,
+    @Deprecated
+	public static void find2Methods(Object self, String superMethod,
                                     String thisMethod, int index,
                                     String desc, java.lang.reflect.Method[] methods)
     {
@@ -83,7 +85,8 @@ public class RuntimeSupport {
      * @throws RuntimeException     if the method is not found.
      * @deprecated replaced by {@link #findMethod(Class, String, String)}
      */
-    public static Method findMethod(Object self, String name, String desc) {
+    @Deprecated
+	public static Method findMethod(Object self, String name, String desc) {
         Method m = findMethod2(self.getClass(), name, desc);
         if (m == null)
             error(self.getClass(), name, desc);

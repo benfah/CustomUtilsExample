@@ -6,11 +6,12 @@ import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.entity.Bat;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
+import com.google.common.collect.HashBiMap;
+
+import me.benfah.cu.api.CustomBlock;
+import me.benfah.cu.api.CustomRegistry;
 import me.benfah.cu.util.ReflectionUtils;
-import net.minecraft.server.v1_12_R1.EntityBat;
  
  
 public class CableLine {
@@ -18,6 +19,9 @@ public class CableLine {
 private Bat start;
 private Bat end;
  
+public static HashBiMap<Integer, Integer> biMap = HashBiMap.create();
+
+
 public CableLine() {
 }
  
@@ -62,18 +66,26 @@ if (start.getWorld().getName().equals(end.getWorld().getName())) {
 
 Location startL = start.getLocation().clone();
 Location endL = end.getLocation().clone();
+CustomBlock Scb = CustomRegistry.getCustomBlockByBlock(start);
+CustomBlock Ecb = CustomRegistry.getCustomBlockByBlock(end);
 
- 
 //	Object nmsRopeStart = JavassistBat.javassistBat.getConstructor(nmsWorld.getClass().getSuperclass()).newInstance(nmsWorld);
 //	Object nmsRopeEnd = JavassistBat.javassistBat.getConstructor(nmsWorld.getClass().getSuperclass()).newInstance(nmsWorld);
 //	nmsRopeStart.getClass().getMethod("setLocation", double.class, double.class, double.class, float.class, float.class).invoke(nmsRopeStart, start.getX(), start.getY(), start.getZ(), start.getYaw(), start.getPitch());
 //	nmsRopeStart.getClass().getMethod("setLocation", double.class, double.class, double.class, float.class, float.class).invoke(nmsRopeEnd, start.getX(), start.getY(), start.getZ(), start.getYaw(), start.getPitch());
 // 
-startL.add(0.5, -1, 0.3);
-//endL.add(1.19, 0.57, 0);
+startL.add(0, -1.1, -0.2);
+endL.add(0.69, 0.15, -0.5);
+if(Scb instanceof IVisualCable)
+{
+	startL.add(((IVisualCable)Scb).getRelativeContactPoint());
+}
+if(Ecb instanceof IVisualCable)
+{
+	endL.add(((IVisualCable)Ecb).getRelativeContactPoint());
+}
 
 
-System.out.println("hi");
 Object craftWorld = craftWorldClass.cast(w);
 Object nmsWorld = craftWorld.getClass().getMethod("getHandle").invoke(craftWorld);
 
@@ -90,6 +102,7 @@ Object nmsWorld = craftWorld.getClass().getMethod("getHandle").invoke(craftWorld
  Bat ropeStart = (Bat) tb.getClass().getMethod("getBukkitEntity").invoke(tb);
  Bat ropeEnd = (Bat) tb2.getClass().getMethod("getBukkitEntity").invoke(tb2);
 
+ 
 ropeStart.setGravity(false);
 ropeStart.setInvulnerable(true);
 ropeStart.setCustomName("rs");
@@ -118,8 +131,9 @@ ropeEnd.setCustomName("re");
 //
 //playerConnection.getClass().getMethod("sendPacket", packetClass).invoke(playerConnection, ppoae);
 
-ropeStart.setLeashHolder(ropeEnd);
-
+//ropeStart.setLeashHolder(ropeEnd);
+this.biMap.put(ropeStart.getEntityId(), ropeEnd.getEntityId());
+System.out.println(biMap.get(ropeStart.getEntityId()));
 this.start = ropeStart;
 this.end = ropeEnd;
  } catch (Exception e) {

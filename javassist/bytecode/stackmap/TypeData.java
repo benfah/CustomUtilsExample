@@ -107,7 +107,8 @@ public abstract class TypeData {
     // see UninitTypeVar and UninitData
     public void constructorCalled(int offset) {}
 
-    public String toString() {
+    @Override
+	public String toString() {
         return super.toString() + "(" + toString2(new HashSet()) + ")";
     }
 
@@ -127,39 +128,48 @@ public abstract class TypeData {
             decodedName = decoded;
         }
 
-        public int getTypeTag() { return typeTag; }
-        public int getTypeData(ConstPool cp) { return 0; }
+        @Override
+		public int getTypeTag() { return typeTag; }
+        @Override
+		public int getTypeData(ConstPool cp) { return 0; }
 
-        public TypeData join() {
+        @Override
+		public TypeData join() {
             if (this == TypeTag.TOP)
                 return this;
             else
                 return super.join();
         }
 
-        public BasicType isBasicType() { return this; }
+        @Override
+		public BasicType isBasicType() { return this; }
 
-        public boolean is2WordType() {
+        @Override
+		public boolean is2WordType() {
             return typeTag == StackMapTable.LONG
                     || typeTag == StackMapTable.DOUBLE;
         }
 
-        public boolean eq(TypeData d) { return this == d; }
+        @Override
+		public boolean eq(TypeData d) { return this == d; }
 
-        public String getName() {
+        @Override
+		public String getName() {
             return name;
         }
 
         public char getDecodedName() { return decodedName; }
 
-        public void setType(String s, ClassPool cp) throws BadBytecode {
+        @Override
+		public void setType(String s, ClassPool cp) throws BadBytecode {
             throw new BadBytecode("conflict: " + name + " and " + s);
         }
 
         /**
          * @param dim		array dimension.  It may be negative.
          */
-        public TypeData getArrayType(int dim) throws NotFoundException {
+        @Override
+		public TypeData getArrayType(int dim) throws NotFoundException {
             if (this == TypeTag.TOP)
                 return this;
             else if (dim < 0)
@@ -176,20 +186,24 @@ public abstract class TypeData {
             }
         }
 
-        String toString2(HashSet set) { return name; }
+        @Override
+		String toString2(HashSet set) { return name; }
     }
 
     // a type variable
     public static abstract class AbsTypeVar extends TypeData {
         public AbsTypeVar() {}
         public abstract void merge(TypeData t);
-        public int getTypeTag() { return StackMapTable.OBJECT; }
+        @Override
+		public int getTypeTag() { return StackMapTable.OBJECT; }
 
-        public int getTypeData(ConstPool cp) {
+        @Override
+		public int getTypeData(ConstPool cp) {
             return cp.addClassInfo(getName());
         }
 
-        public boolean eq(TypeData d) { return getName().equals(d.getName()); }
+        @Override
+		public boolean eq(TypeData d) { return getName().equals(d.getName()); }
     }
 
     /* a type variable representing a class type or a basic type.
@@ -210,21 +224,24 @@ public abstract class TypeData {
             is2WordType = t.is2WordType();
         }
 
-        public String getName() {
+        @Override
+		public String getName() {
             if (fixedType == null)
                 return ((TypeData)lowers.get(0)).getName();
             else
                 return fixedType;
         }
 
-        public BasicType isBasicType() {
+        @Override
+		public BasicType isBasicType() {
             if (fixedType == null)
                 return ((TypeData)lowers.get(0)).isBasicType();
             else
                 return null;
         }
 
-        public boolean is2WordType() {
+        @Override
+		public boolean is2WordType() {
             if (fixedType == null) {
                 return is2WordType;
                 // return ((TypeData)lowers.get(0)).is2WordType();
@@ -233,27 +250,31 @@ public abstract class TypeData {
                 return false;
         }
 
-        public boolean isNullType() {
+        @Override
+		public boolean isNullType() {
             if (fixedType == null)
                 return ((TypeData)lowers.get(0)).isNullType();
             else
                 return false;
         }
 
-        public boolean isUninit() {
+        @Override
+		public boolean isUninit() {
             if (fixedType == null)
                 return ((TypeData)lowers.get(0)).isUninit();
             else
                 return false;
         }
 
-        public void merge(TypeData t) {
+        @Override
+		public void merge(TypeData t) {
             lowers.add(t);
             if (t instanceof TypeVar)
                 ((TypeVar)t).usedBy.add(this);
         }
 
-        public int getTypeTag() {
+        @Override
+		public int getTypeTag() {
             /* If fixedType is null after calling dfs(), then this
                type is NULL, Uninit, or a basic type.  So call
                getTypeTag() on the first element of lowers. */
@@ -263,14 +284,16 @@ public abstract class TypeData {
                 return super.getTypeTag();
         }
 
-        public int getTypeData(ConstPool cp) {
+        @Override
+		public int getTypeData(ConstPool cp) {
             if (fixedType == null)
                 return ((TypeData)lowers.get(0)).getTypeData(cp);
             else
                 return super.getTypeData(cp);
         }
 
-        public void setType(String typeName, ClassPool cp) throws BadBytecode {
+        @Override
+		public void setType(String typeName, ClassPool cp) throws BadBytecode {
             if (uppers == null)
                 uppers = new ArrayList();
 
@@ -282,7 +305,8 @@ public abstract class TypeData {
         private boolean inList = false;
         private int dimension = 0;
 
-        protected TypeVar toTypeVar(int dim) {
+        @Override
+		protected TypeVar toTypeVar(int dim) {
             dimension = dim;
             return this;
         }
@@ -290,7 +314,8 @@ public abstract class TypeData {
         /* When fixTypes() is called, getName() will return the correct
          * (i.e. fixed) type name.
          */
-        public TypeData getArrayType(int dim) throws NotFoundException {
+        @Override
+		public TypeData getArrayType(int dim) throws NotFoundException {
             if (dim == 0)
                 return this;
             else {
@@ -306,7 +331,8 @@ public abstract class TypeData {
         }
 
         // depth-first serach
-        public int dfs(ArrayList preOrder, int index, ClassPool cp) throws NotFoundException {
+        @Override
+		public int dfs(ArrayList preOrder, int index, ClassPool cp) throws NotFoundException {
             if (visited > 0)
                 return index;		// MapMaker.make() may call an already visited node.
 
@@ -460,7 +486,8 @@ public abstract class TypeData {
             return type;
         }
 
-        String toString2(HashSet hash) {
+        @Override
+		String toString2(HashSet hash) {
             hash.add(this);
             if (lowers.size() > 0) {
                 TypeData e = (TypeData)lowers.get(0);
@@ -605,7 +632,8 @@ public abstract class TypeData {
             throw new BadBytecode("bad AASTORE: " + element);
         }
 
-        public void merge(TypeData t) {
+        @Override
+		public void merge(TypeData t) {
             try {
                 if (!t.isNullType())
                     element.merge(ArrayElement.make(t));
@@ -616,14 +644,17 @@ public abstract class TypeData {
             }
         }
 
-        public String getName() {
+        @Override
+		public String getName() {
             return typeName(element.getName());
         }
 
         public AbsTypeVar elementType() { return element; }
 
-        public BasicType isBasicType() { return null; }
-        public boolean is2WordType() { return false; }
+        @Override
+		public BasicType isBasicType() { return null; }
+        @Override
+		public boolean is2WordType() { return false; }
 
         /* elementType must be a class name.  Basic type names
          * are not allowed.
@@ -635,21 +666,26 @@ public abstract class TypeData {
                 return "[L" + elementType.replace('.', '/') + ";";
         }
 
-        public void setType(String s, ClassPool cp) throws BadBytecode {
+        @Override
+		public void setType(String s, ClassPool cp) throws BadBytecode {
             element.setType(ArrayElement.typeName(s), cp);
         }
 
-        protected TypeVar toTypeVar(int dim) { return element.toTypeVar(dim + 1); }
+        @Override
+		protected TypeVar toTypeVar(int dim) { return element.toTypeVar(dim + 1); }
 
-        public TypeData getArrayType(int dim) throws NotFoundException {
+        @Override
+		public TypeData getArrayType(int dim) throws NotFoundException {
             return element.getArrayType(dim + 1);
         }
 
-        public int dfs(ArrayList order, int index, ClassPool cp) throws NotFoundException {
+        @Override
+		public int dfs(ArrayList order, int index, ClassPool cp) throws NotFoundException {
             return element.dfs(order, index, cp);
         }
 
-        String toString2(HashSet set) {
+        @Override
+		String toString2(HashSet set) {
             return "[" + element.toString2(set);
         }
     }
@@ -676,7 +712,8 @@ public abstract class TypeData {
             throw new BadBytecode("bad AASTORE: " + array);
         }
 
-        public void merge(TypeData t) {
+        @Override
+		public void merge(TypeData t) {
             try {
                 if (!t.isNullType())
                     array.merge(ArrayType.make(t));
@@ -687,7 +724,8 @@ public abstract class TypeData {
             }
         }
 
-        public String getName() {
+        @Override
+		public String getName() {
             return typeName(array.getName());
         }
 
@@ -697,9 +735,11 @@ public abstract class TypeData {
          * not allowed.
          */
 
-        public BasicType isBasicType() { return null; }
+        @Override
+		public BasicType isBasicType() { return null; }
 
-        public boolean is2WordType() { return false; }
+        @Override
+		public boolean is2WordType() { return false; }
 
         private static String typeName(String arrayType) {
             if (arrayType.length() > 1 && arrayType.charAt(0) == '[') {
@@ -713,21 +753,26 @@ public abstract class TypeData {
             return "java.lang.Object";      // the array type may be NullType
         }
 
-        public void setType(String s, ClassPool cp) throws BadBytecode {
+        @Override
+		public void setType(String s, ClassPool cp) throws BadBytecode {
             array.setType(ArrayType.typeName(s), cp);
         }
 
-        protected TypeVar toTypeVar(int dim) { return array.toTypeVar(dim - 1); }
+        @Override
+		protected TypeVar toTypeVar(int dim) { return array.toTypeVar(dim - 1); }
 
-        public TypeData getArrayType(int dim) throws NotFoundException {
+        @Override
+		public TypeData getArrayType(int dim) throws NotFoundException {
             return array.getArrayType(dim - 1);
         }
 
-        public int dfs(ArrayList order, int index, ClassPool cp) throws NotFoundException {
+        @Override
+		public int dfs(ArrayList order, int index, ClassPool cp) throws NotFoundException {
             return array.dfs(order, index, cp);
         }
 
-        String toString2(HashSet set) {
+        @Override
+		String toString2(HashSet set) {
             return "*" + array.toString2(set);
         }
     }
@@ -736,27 +781,39 @@ public abstract class TypeData {
         protected TypeData type;    // UninitData or TOP
 
         public UninitTypeVar(UninitData t) { type = t; }
-        public int getTypeTag() { return type.getTypeTag(); }
-        public int getTypeData(ConstPool cp) { return type.getTypeData(cp); }
-        public BasicType isBasicType() { return type.isBasicType(); }
-        public boolean is2WordType() { return type.is2WordType(); }
-        public boolean isUninit() { return type.isUninit(); }
-        public boolean eq(TypeData d) { return type.eq(d); }
-        public String getName() { return type.getName(); }
+        @Override
+		public int getTypeTag() { return type.getTypeTag(); }
+        @Override
+		public int getTypeData(ConstPool cp) { return type.getTypeData(cp); }
+        @Override
+		public BasicType isBasicType() { return type.isBasicType(); }
+        @Override
+		public boolean is2WordType() { return type.is2WordType(); }
+        @Override
+		public boolean isUninit() { return type.isUninit(); }
+        @Override
+		public boolean eq(TypeData d) { return type.eq(d); }
+        @Override
+		public String getName() { return type.getName(); }
 
-        protected TypeVar toTypeVar(int dim) { return null; }
-        public TypeData join() { return type.join(); }
+        @Override
+		protected TypeVar toTypeVar(int dim) { return null; }
+        @Override
+		public TypeData join() { return type.join(); }
 
-        public void setType(String s, ClassPool cp) throws BadBytecode {
+        @Override
+		public void setType(String s, ClassPool cp) throws BadBytecode {
             type.setType(s, cp);
         }
 
-        public void merge(TypeData t) {
+        @Override
+		public void merge(TypeData t) {
             if (!t.eq(type))
                 type = TypeTag.TOP;
         }
 
-        public void constructorCalled(int offset) {
+        @Override
+		public void constructorCalled(int offset) {
             type.constructorCalled(offset);
         }
 
@@ -767,11 +824,13 @@ public abstract class TypeData {
                 throw new RuntimeException("not available");
         }
 
-        public TypeData getArrayType(int dim) throws NotFoundException {
+        @Override
+		public TypeData getArrayType(int dim) throws NotFoundException {
             return type.getArrayType(dim);
         }
 
-        String toString2(HashSet set) { return ""; }
+        @Override
+		String toString2(HashSet set) { return ""; }
     }
 
     /**
@@ -784,25 +843,33 @@ public abstract class TypeData {
             name = n;
         }
 
-        public String getName() {
+        @Override
+		public String getName() {
             return name;
         }
 
-        public BasicType isBasicType() { return null; }
+        @Override
+		public BasicType isBasicType() { return null; }
 
-        public boolean is2WordType() { return false; }
+        @Override
+		public boolean is2WordType() { return false; }
 
-        public int getTypeTag() { return StackMapTable.OBJECT; }
+        @Override
+		public int getTypeTag() { return StackMapTable.OBJECT; }
 
-        public int getTypeData(ConstPool cp) {
+        @Override
+		public int getTypeData(ConstPool cp) {
             return cp.addClassInfo(getName());
         }
 
-        public boolean eq(TypeData d) { return name.equals(d.getName()); }
+        @Override
+		public boolean eq(TypeData d) { return name.equals(d.getName()); }
 
-        public void setType(String typeName, ClassPool cp) throws BadBytecode {}
+        @Override
+		public void setType(String typeName, ClassPool cp) throws BadBytecode {}
 
-        public TypeData getArrayType(int dim) throws NotFoundException {
+        @Override
+		public TypeData getArrayType(int dim) throws NotFoundException {
             if (dim == 0)
                 return this;
             else if (dim > 0) {
@@ -837,7 +904,8 @@ public abstract class TypeData {
             }
         }
 
-        String toString2(HashSet set) {
+        @Override
+		String toString2(HashSet set) {
             return name;
         }
     }
@@ -852,14 +920,18 @@ public abstract class TypeData {
             super("null-type");      // type name
         }
 
-        public int getTypeTag() {
+        @Override
+		public int getTypeTag() {
             return StackMapTable.NULL;
         }
 
-        public boolean isNullType() { return true; }
-        public int getTypeData(ConstPool cp) { return 0; }
+        @Override
+		public boolean isNullType() { return true; }
+        @Override
+		public int getTypeData(ConstPool cp) { return 0; }
 
-        public TypeData getArrayType(int dim) { return this; }
+        @Override
+		public TypeData getArrayType(int dim) { return this; }
     }
 
     /**
@@ -877,24 +949,29 @@ public abstract class TypeData {
 
         public UninitData copy() { return new UninitData(offset, getName()); }
 
-        public int getTypeTag() {
+        @Override
+		public int getTypeTag() {
             return StackMapTable.UNINIT;
         }
 
-        public int getTypeData(ConstPool cp) {
+        @Override
+		public int getTypeData(ConstPool cp) {
             return offset;
         }
 
-        public TypeData join() {
+        @Override
+		public TypeData join() {
             if (initialized)
                 return new TypeVar(new ClassName(getName()));
             else
                 return new UninitTypeVar(copy());
         }
 
-        public boolean isUninit() { return true; }
+        @Override
+		public boolean isUninit() { return true; }
 
-        public boolean eq(TypeData d) {
+        @Override
+		public boolean eq(TypeData d) {
             if (d instanceof UninitData) {
                 UninitData ud = (UninitData)d;
                 return offset == ud.offset && getName().equals(ud.getName());
@@ -905,12 +982,14 @@ public abstract class TypeData {
 
         public int offset() { return offset; }
 
-        public void constructorCalled(int offset) {
+        @Override
+		public void constructorCalled(int offset) {
             if (offset == this.offset)
                 initialized = true;
         }
 
-        String toString2(HashSet set) { return getName() + "," + offset; }
+        @Override
+		String toString2(HashSet set) { return getName() + "," + offset; }
     }
 
     public static class UninitThis extends UninitData {
@@ -918,16 +997,20 @@ public abstract class TypeData {
             super(-1, className);
         }
 
-        public UninitData copy() { return new UninitThis(getName()); }
+        @Override
+		public UninitData copy() { return new UninitThis(getName()); }
 
-        public int getTypeTag() {
+        @Override
+		public int getTypeTag() {
             return StackMapTable.THIS;
         }
 
-        public int getTypeData(ConstPool cp) {
+        @Override
+		public int getTypeData(ConstPool cp) {
             return 0;
         }
 
-        String toString2(HashSet set) { return "uninit:this"; }
+        @Override
+		String toString2(HashSet set) { return "uninit:this"; }
     }
 }

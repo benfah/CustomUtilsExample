@@ -139,7 +139,8 @@ public class TypeChecker extends Visitor implements Opcode, TokenId {
         return resolver.resolveJvmClassName(jvmName);
     }
 
-    public void atNewExpr(NewExpr expr) throws CompileError {
+    @Override
+	public void atNewExpr(NewExpr expr) throws CompileError {
         if (expr.isArray())
             atNewArrayExpr(expr);
         else {
@@ -177,7 +178,8 @@ public class TypeChecker extends Visitor implements Opcode, TokenId {
         }
     }
 
-    public void atArrayInit(ArrayInit init) throws CompileError {
+    @Override
+	public void atArrayInit(ArrayInit init) throws CompileError {
         ASTList list = init;
         while (list != null) {
             ASTree h = list.head();
@@ -209,7 +211,8 @@ public class TypeChecker extends Visitor implements Opcode, TokenId {
             className = null;
     }
 
-    public void atAssignExpr(AssignExpr expr) throws CompileError {
+    @Override
+	public void atAssignExpr(AssignExpr expr) throws CompileError {
         // =, %=, &=, *=, /=, +=, -=, ^=, |=, <<=, >>=, >>>=
         int op = expr.getOperator();
         ASTree left = expr.oprand1();
@@ -279,7 +282,8 @@ public class TypeChecker extends Visitor implements Opcode, TokenId {
         className = cname;
     }
 
-    public void atCondExpr(CondExpr expr) throws CompileError {
+    @Override
+	public void atCondExpr(CondExpr expr) throws CompileError {
         booleanExpr(expr.condExpr());
         expr.thenExpr().accept(this);
         int type1 = exprType;
@@ -302,7 +306,8 @@ public class TypeChecker extends Visitor implements Opcode, TokenId {
      * (if the original is not '+') and sets the new expression to the
      * left-hand-side expression and null to the right-hand-side expression. 
      */
-    public void atBinExpr(BinExpr expr) throws CompileError {
+    @Override
+	public void atBinExpr(BinExpr expr) throws CompileError {
         int token = expr.getOperator();
         int k = CodeGen.lookupBinOp(token);
         if (k >= 0) {
@@ -542,7 +547,8 @@ public class TypeChecker extends Visitor implements Opcode, TokenId {
             exprType = type1;
     }
 
-    public void atCastExpr(CastExpr expr) throws CompileError {
+    @Override
+	public void atCastExpr(CastExpr expr) throws CompileError {
         String cname = resolveClassName(expr.getClassName());
         expr.getOprand().accept(this);
         exprType = expr.getType();
@@ -550,13 +556,15 @@ public class TypeChecker extends Visitor implements Opcode, TokenId {
         className = cname;
     }
 
-    public void atInstanceOfExpr(InstanceOfExpr expr) throws CompileError {
+    @Override
+	public void atInstanceOfExpr(InstanceOfExpr expr) throws CompileError {
         expr.getOprand().accept(this);
         exprType = BOOLEAN;
         arrayDim = 0;
     }
 
-    public void atExpr(Expr expr) throws CompileError {
+    @Override
+	public void atExpr(Expr expr) throws CompileError {
         // array access, member access,
         // (unary) +, (unary) -, ++, --, !, ~
 
@@ -629,7 +637,8 @@ public class TypeChecker extends Visitor implements Opcode, TokenId {
         return true;
     }
 
-    public void atCallExpr(CallExpr expr) throws CompileError {
+    @Override
+	public void atCallExpr(CallExpr expr) throws CompileError {
         String mname = null;
         CtClass targetClass = null;
         ASTree method = expr.oprand1();
@@ -984,18 +993,21 @@ public class TypeChecker extends Visitor implements Opcode, TokenId {
             exprType = INT;
     }
 
-    public void atMember(Member mem) throws CompileError {
+    @Override
+	public void atMember(Member mem) throws CompileError {
         atFieldRead(mem);
     }
 
-    public void atVariable(Variable v) throws CompileError {
+    @Override
+	public void atVariable(Variable v) throws CompileError {
         Declarator d = v.getDeclarator();
         exprType = d.getType();
         arrayDim = d.getArrayDim();
         className = d.getClassName();
     }
 
-    public void atKeyword(Keyword k) throws CompileError {
+    @Override
+	public void atKeyword(Keyword k) throws CompileError {
         arrayDim = 0;
         int token = k.get();
         switch (token) {
@@ -1019,13 +1031,15 @@ public class TypeChecker extends Visitor implements Opcode, TokenId {
         }
     }
 
-    public void atStringL(StringL s) throws CompileError {
+    @Override
+	public void atStringL(StringL s) throws CompileError {
         exprType = CLASS;
         arrayDim = 0;
         className = jvmJavaLangString;
     }
 
-    public void atIntConst(IntConst i) throws CompileError {
+    @Override
+	public void atIntConst(IntConst i) throws CompileError {
         arrayDim = 0;
         int type = i.getType();
         if (type == IntConstant || type == CharConstant)
@@ -1034,7 +1048,8 @@ public class TypeChecker extends Visitor implements Opcode, TokenId {
             exprType = LONG;
     }
 
-    public void atDoubleConst(DoubleConst d) throws CompileError {
+    @Override
+	public void atDoubleConst(DoubleConst d) throws CompileError {
         arrayDim = 0;
         if (d.getType() == DoubleConstant)
             exprType = DOUBLE;

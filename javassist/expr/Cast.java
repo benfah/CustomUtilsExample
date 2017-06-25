@@ -36,7 +36,8 @@ public class Cast extends Expr {
      * Returns the method or constructor containing the type cast
      * expression represented by this object.
      */
-    public CtBehavior where() { return super.where(); }
+    @Override
+	public CtBehavior where() { return super.where(); }
 
     /**
      * Returns the line number of the source line containing the
@@ -44,7 +45,8 @@ public class Cast extends Expr {
      *
      * @return -1       if this information is not available.
      */
-    public int getLineNumber() {
+    @Override
+	public int getLineNumber() {
         return super.getLineNumber();
     }
 
@@ -53,7 +55,8 @@ public class Cast extends Expr {
      *
      * @return null     if this information is not available.
      */
-    public String getFileName() {
+    @Override
+	public String getFileName() {
         return super.getFileName();
     }
 
@@ -75,7 +78,8 @@ public class Cast extends Expr {
      * including the expression can catch and the exceptions that
      * the throws declaration allows the method to throw.
      */
-    public CtClass[] mayThrow() {
+    @Override
+	public CtClass[] mayThrow() {
         return super.mayThrow();
     }
 
@@ -87,7 +91,8 @@ public class Cast extends Expr {
      *
      * @param statement         a Java statement except try-catch.
      */
-    public void replace(String statement) throws CannotCompileException {
+    @Override
+	public void replace(String statement) throws CannotCompileException {
         thisClass.getClassFile();   // to call checkModify().
         ConstPool constPool = getConstPool();
         int pos = currentPos;
@@ -142,7 +147,8 @@ public class Cast extends Expr {
             retType = t;
         }
 
-        public void doit(JvstCodeGen gen, Bytecode bytecode, ASTList args)
+        @Override
+		public void doit(JvstCodeGen gen, Bytecode bytecode, ASTList args)
             throws CompileError
         {
             if (gen.getMethodArgsLength(args) != 1)
@@ -156,7 +162,8 @@ public class Cast extends Expr {
             gen.setType(retType);
         }
         
-        public void setReturnType(JvstTypeChecker c, ASTList args)
+        @Override
+		public void setReturnType(JvstTypeChecker c, ASTList args)
             throws CompileError
         {
             c.atMethodArgs(args, new int[1], new int[1], new String[1]);

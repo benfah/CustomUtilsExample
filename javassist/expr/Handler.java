@@ -41,14 +41,16 @@ public class Handler extends Expr {
     /**
      * Returns the method or constructor containing the catch clause.
      */
-    public CtBehavior where() { return super.where(); }
+    @Override
+	public CtBehavior where() { return super.where(); }
 
     /**
      * Returns the source line number of the catch clause.
      *
      * @return -1       if this information is not available.
      */
-    public int getLineNumber() {
+    @Override
+	public int getLineNumber() {
         return super.getLineNumber();
     }
 
@@ -57,14 +59,16 @@ public class Handler extends Expr {
      *
      * @return null     if this information is not available.
      */
-    public String getFileName() {
+    @Override
+	public String getFileName() {
         return super.getFileName();
     }
 
     /**
      * Returns the list of exceptions that the catch clause may throw.
      */
-    public CtClass[] mayThrow() {
+    @Override
+	public CtClass[] mayThrow() {
         return super.mayThrow();
     }
 
@@ -95,7 +99,8 @@ public class Handler extends Expr {
      *
      * @param statement         a Java statement except try-catch.
      */
-    public void replace(String statement) throws CannotCompileException {
+    @Override
+	public void replace(String statement) throws CannotCompileException {
         throw new RuntimeException("not implemented yet");
     }
 

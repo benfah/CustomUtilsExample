@@ -45,7 +45,8 @@ final class DirClassPath implements ClassPath {
         directory = dirName;
     }
 
-    public InputStream openClassfile(String classname) {
+    @Override
+	public InputStream openClassfile(String classname) {
         try {
             char sep = File.separatorChar;
             String filename = directory + sep
@@ -57,7 +58,8 @@ final class DirClassPath implements ClassPath {
         return null;
     }
 
-    public URL find(String classname) {
+    @Override
+	public URL find(String classname) {
         char sep = File.separatorChar;
         String filename = directory + sep
             + classname.replace('.', sep) + ".class";
@@ -72,9 +74,11 @@ final class DirClassPath implements ClassPath {
         return null;
     }
 
-    public void close() {}
+    @Override
+	public void close() {}
 
-    public String toString() {
+    @Override
+	public String toString() {
         return directory;
     }
 }
@@ -84,7 +88,8 @@ final class JarDirClassPath implements ClassPath {
 
     JarDirClassPath(String dirName) throws NotFoundException {
         File[] files = new File(dirName).listFiles(new FilenameFilter() {
-            public boolean accept(File dir, String name) {
+            @Override
+			public boolean accept(File dir, String name) {
                 name = name.toLowerCase();
                 return name.endsWith(".jar") || name.endsWith(".zip");
             }
@@ -97,7 +102,8 @@ final class JarDirClassPath implements ClassPath {
         }
     }
 
-    public InputStream openClassfile(String classname) throws NotFoundException {
+    @Override
+	public InputStream openClassfile(String classname) throws NotFoundException {
         if (jars != null)
             for (int i = 0; i < jars.length; i++) {
                 InputStream is = jars[i].openClassfile(classname);
@@ -108,7 +114,8 @@ final class JarDirClassPath implements ClassPath {
         return null;    // not found
     }
 
-    public URL find(String classname) {
+    @Override
+	public URL find(String classname) {
         if (jars != null)
             for (int i = 0; i < jars.length; i++) {
                 URL url = jars[i].find(classname);
@@ -119,7 +126,8 @@ final class JarDirClassPath implements ClassPath {
         return null;    // not found
     }
 
-    public void close() {
+    @Override
+	public void close() {
         if (jars != null)
             for (int i = 0; i < jars.length; i++)
                 jars[i].close();
@@ -141,7 +149,8 @@ final class JarClassPath implements ClassPath {
         throw new NotFoundException(pathname);
     }
 
-    public InputStream openClassfile(String classname)
+    @Override
+	public InputStream openClassfile(String classname)
         throws NotFoundException
     {
         try {
@@ -157,7 +166,8 @@ final class JarClassPath implements ClassPath {
                                     + jarfile.getName());
     }
 
-    public URL find(String classname) {
+    @Override
+	public URL find(String classname) {
         String jarname = classname.replace('.', '/') + ".class";
         JarEntry je = jarfile.getJarEntry(jarname);
         if (je != null)
@@ -169,7 +179,8 @@ final class JarClassPath implements ClassPath {
         return null;            // not found
     }
 
-    public void close() {
+    @Override
+	public void close() {
         try {
             jarfile.close();
             jarfile = null;
@@ -177,7 +188,8 @@ final class JarClassPath implements ClassPath {
         catch (IOException e) {}
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return jarfile == null ? "<null>" : jarfile.toString();
     }
 }
@@ -189,7 +201,8 @@ final class ClassPoolTail {
         pathList = null;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         StringBuffer buf = new StringBuffer();
         buf.append("[class path: ");
         ClassPathList list = pathList;

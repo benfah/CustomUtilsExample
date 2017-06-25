@@ -59,11 +59,13 @@ public class StringMemberValue extends MemberValue {
         setValue("");
     }
 
-    Object getValue(ClassLoader cl, ClassPool cp, Method m) {
+    @Override
+	Object getValue(ClassLoader cl, ClassPool cp, Method m) {
         return getValue();
     }
 
-    Class getType(ClassLoader cl) {
+    @Override
+	Class getType(ClassLoader cl) {
         return String.class;
     }
 
@@ -84,21 +86,24 @@ public class StringMemberValue extends MemberValue {
     /**
      * Obtains the string representation of this object.
      */
-    public String toString() {
+    @Override
+	public String toString() {
         return "\"" + getValue() + "\"";
     }
 
     /**
      * Writes the value.
      */
-    public void write(AnnotationsWriter writer) throws IOException {
+    @Override
+	public void write(AnnotationsWriter writer) throws IOException {
         writer.constValueIndex(getValue());
     }
 
     /**
      * Accepts a visitor.
      */
-    public void accept(MemberValueVisitor visitor) {
+    @Override
+	public void accept(MemberValueVisitor visitor) {
         visitor.visitStringMemberValue(this);
     }
 }

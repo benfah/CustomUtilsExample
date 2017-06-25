@@ -21,7 +21,6 @@ import javassist.bytecode.ConstPool;
 import javassist.bytecode.Descriptor;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 
 /**

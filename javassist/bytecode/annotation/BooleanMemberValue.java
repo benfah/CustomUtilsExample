@@ -58,11 +58,13 @@ public class BooleanMemberValue extends MemberValue {
         setValue(false);
     }
 
-    Object getValue(ClassLoader cl, ClassPool cp, Method m) {
+    @Override
+	Object getValue(ClassLoader cl, ClassPool cp, Method m) {
         return Boolean.valueOf(getValue());
     }
 
-    Class getType(ClassLoader cl) {
+    @Override
+	Class getType(ClassLoader cl) {
         return boolean.class;
     }
 
@@ -83,21 +85,24 @@ public class BooleanMemberValue extends MemberValue {
     /**
      * Obtains the string representation of this object.
      */
-    public String toString() {
+    @Override
+	public String toString() {
         return getValue() ? "true" : "false";
     }
 
     /**
      * Writes the value.
      */
-    public void write(AnnotationsWriter writer) throws IOException {
+    @Override
+	public void write(AnnotationsWriter writer) throws IOException {
         writer.constValueIndex(getValue());
     }
 
     /**
      * Accepts a visitor.
      */
-    public void accept(MemberValueVisitor visitor) {
+    @Override
+	public void accept(MemberValueVisitor visitor) {
         visitor.visitBooleanMemberValue(this);
     }
 }

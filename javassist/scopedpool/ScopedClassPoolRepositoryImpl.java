@@ -76,7 +76,8 @@ public class ScopedClassPoolRepositoryImpl implements ScopedClassPoolRepository 
      * 
      * @return the prune.
      */
-    public boolean isPrune() {
+    @Override
+	public boolean isPrune() {
         return prune;
     }
 
@@ -85,7 +86,8 @@ public class ScopedClassPoolRepositoryImpl implements ScopedClassPoolRepository 
      * 
      * @param prune     a new value.
      */
-    public void setPrune(boolean prune) {
+    @Override
+	public void setPrune(boolean prune) {
         this.prune = prune;
     }
 
@@ -96,11 +98,13 @@ public class ScopedClassPoolRepositoryImpl implements ScopedClassPoolRepository 
      * @param src   the original classpool.
      * @return the classpool
      */
-    public ScopedClassPool createScopedClassPool(ClassLoader cl, ClassPool src) {
+    @Override
+	public ScopedClassPool createScopedClassPool(ClassLoader cl, ClassPool src) {
         return factory.create(cl, src, this);
     }
 
-    public ClassPool findClassPool(ClassLoader cl) {
+    @Override
+	public ClassPool findClassPool(ClassLoader cl) {
         if (cl == null)
             return registerClassLoader(ClassLoader.getSystemClassLoader());
 
@@ -113,7 +117,8 @@ public class ScopedClassPoolRepositoryImpl implements ScopedClassPoolRepository 
      * @param ucl       the classloader.
      * @return the classpool
      */
-    public ClassPool registerClassLoader(ClassLoader ucl) {
+    @Override
+	public ClassPool registerClassLoader(ClassLoader ucl) {
         synchronized (registeredCLs) {
             // FIXME: Probably want to take this method out later
             // so that AOP framework can be independent of JMX
@@ -132,7 +137,8 @@ public class ScopedClassPoolRepositoryImpl implements ScopedClassPoolRepository 
     /**
      * Get the registered classloaders.
      */
-    public Map getRegisteredCLs() {
+    @Override
+	public Map getRegisteredCLs() {
         clearUnregisteredClassLoaders();
         return registeredCLs;
     }
@@ -141,7 +147,8 @@ public class ScopedClassPoolRepositoryImpl implements ScopedClassPoolRepository 
      * This method will check to see if a register classloader has been
      * undeployed (as in JBoss)
      */
-    public void clearUnregisteredClassLoaders() {
+    @Override
+	public void clearUnregisteredClassLoaders() {
         ArrayList toUnregister = null;
         synchronized (registeredCLs) {
             Iterator it = registeredCLs.values().iterator();
@@ -166,7 +173,8 @@ public class ScopedClassPoolRepositoryImpl implements ScopedClassPoolRepository 
         }
     }
 
-    public void unregisterClassLoader(ClassLoader cl) {
+    @Override
+	public void unregisterClassLoader(ClassLoader cl) {
         synchronized (registeredCLs) {
             ScopedClassPool pool = (ScopedClassPool)registeredCLs.remove(cl);
             if (pool != null)
@@ -178,11 +186,13 @@ public class ScopedClassPoolRepositoryImpl implements ScopedClassPoolRepository 
         // Noop - this is the end
     }
 
-    public void setClassPoolFactory(ScopedClassPoolFactory factory) {
+    @Override
+	public void setClassPoolFactory(ScopedClassPoolFactory factory) {
         this.factory = factory;
     }
 
-    public ScopedClassPoolFactory getClassPoolFactory() {
+    @Override
+	public ScopedClassPoolFactory getClassPoolFactory() {
         return factory;
     }
 }

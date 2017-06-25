@@ -65,16 +65,19 @@ public class ByteArrayClassPath implements ClassPath {
     /**
      * Closes this class path.
      */
-    public void close() {}
+    @Override
+	public void close() {}
 
-    public String toString() {
+    @Override
+	public String toString() {
         return "byte[]:" + classname;
     }
 
     /**
      * Opens the class file.
      */
-    public InputStream openClassfile(String classname) {
+    @Override
+	public InputStream openClassfile(String classname) {
         if(this.classname.equals(classname))
             return new ByteArrayInputStream(classfile);
         else
@@ -84,7 +87,8 @@ public class ByteArrayClassPath implements ClassPath {
     /**
      * Obtains the URL.
      */
-    public URL find(String classname) {
+    @Override
+	public URL find(String classname) {
         if(this.classname.equals(classname)) {
             String cname = classname.replace('.', '/') + ".class";
             try {

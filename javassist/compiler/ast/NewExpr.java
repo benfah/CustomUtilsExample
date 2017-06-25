@@ -70,9 +70,11 @@ public class NewExpr extends ASTList implements TokenId {
             return (ArrayInit)t.getLeft();
     }
 
-    public void accept(Visitor v) throws CompileError { v.atNewExpr(this); }
+    @Override
+	public void accept(Visitor v) throws CompileError { v.atNewExpr(this); }
 
-    protected String getTag() {
+    @Override
+	protected String getTag() {
         return newArray ? "new[]" : "new";
     }
 }

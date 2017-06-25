@@ -10,11 +10,8 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 
-import com.example.NMSUtils.Biome;
-
 import me.benfah.cu.util.ReflectionUtils;
 import net.minecraft.server.v1_12_R1.BiomeBase;
-import net.minecraft.server.v1_12_R1.EntityTypes;
 import net.minecraft.server.v1_12_R1.RegistryMaterials;
 
  

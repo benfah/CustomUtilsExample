@@ -56,7 +56,8 @@ public class EnumMemberValue extends MemberValue {
         typeIndex = valueIndex = 0;
     }
 
-    Object getValue(ClassLoader cl, ClassPool cp, Method m)
+    @Override
+	Object getValue(ClassLoader cl, ClassPool cp, Method m)
         throws ClassNotFoundException
     {
         try {
@@ -70,7 +71,8 @@ public class EnumMemberValue extends MemberValue {
         }
     }
 
-    Class getType(ClassLoader cl) throws ClassNotFoundException {
+    @Override
+	Class getType(ClassLoader cl) throws ClassNotFoundException {
         return loadClass(cl, getType());
     }
 
@@ -106,21 +108,24 @@ public class EnumMemberValue extends MemberValue {
         valueIndex = cp.addUtf8Info(name);
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return getType() + "." + getValue();
     }
 
     /**
      * Writes the value.
      */
-    public void write(AnnotationsWriter writer) throws IOException {
+    @Override
+	public void write(AnnotationsWriter writer) throws IOException {
         writer.enumConstValue(cp.getUtf8Info(typeIndex), getValue());
     }
 
     /**
      * Accepts a visitor.
      */
-    public void accept(MemberValueVisitor visitor) {
+    @Override
+	public void accept(MemberValueVisitor visitor) {
         visitor.visitEnumMemberValue(this);
     }
 }

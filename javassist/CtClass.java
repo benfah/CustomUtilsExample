@@ -198,7 +198,8 @@ public abstract class CtClass {
     /**
      * Converts the object to a string.
      */
-    public String toString() {
+    @Override
+	public String toString() {
         StringBuffer buf = new StringBuffer(getClass().getName());
         buf.append("@");
         buf.append(Integer.toHexString(hashCode()));
@@ -521,17 +522,20 @@ public abstract class CtClass {
         ClassFile cf = getClassFile2();
         if (cf != null) {
             ClassMap cm = new ClassMap() {
-                public void put(String oldname, String newname) {
+                @Override
+				public void put(String oldname, String newname) {
                     put0(oldname, newname);
                 }
 
-                public Object get(Object jvmClassName) {
+                @Override
+				public Object get(Object jvmClassName) {
                     String n = toJavaName((String)jvmClassName);
                     put0(n, n);
                     return null;
                 }
 
-                public void fix(String name) {}
+                @Override
+				public void fix(String name) {}
             };
             cf.getRefClasses(cm);
             return cm.values();
@@ -782,7 +786,8 @@ public abstract class CtClass {
      *             Use {@link #getEnclosingBehavior()}.
      * @see #getEnclosingBehavior()
      */
-    public final CtMethod getEnclosingMethod() throws NotFoundException {
+    @Deprecated
+	public final CtMethod getEnclosingMethod() throws NotFoundException {
         CtBehavior b = getEnclosingBehavior();
         if (b == null)
             return null;
@@ -1325,7 +1330,8 @@ public abstract class CtClass {
      *
      * @deprecated      Replaced by {@link #toClass(ClassLoader,ProtectionDomain)}
      */
-    public final Class toClass(ClassLoader loader)
+    @Deprecated
+	public final Class toClass(ClassLoader loader)
         throws CannotCompileException
     {
         return getClassPool().toClass(this, loader);
@@ -1544,28 +1550,33 @@ public abstract class CtClass {
                 file = new FileOutputStream(filename);
         }
 
-        public void write(int b) throws IOException {
+        @Override
+		public void write(int b) throws IOException {
             init();
             file.write(b);
         }
 
-        public void write(byte[] b) throws IOException {
+        @Override
+		public void write(byte[] b) throws IOException {
             init();
             file.write(b);
         }
 
-        public void write(byte[] b, int off, int len) throws IOException {
+        @Override
+		public void write(byte[] b, int off, int len) throws IOException {
             init();
             file.write(b, off, len);
 
         }
 
-        public void flush() throws IOException {
+        @Override
+		public void flush() throws IOException {
             init();
             file.flush();
         }
 
-        public void close() throws IOException {
+        @Override
+		public void close() throws IOException {
             init();
             file.close();
         }

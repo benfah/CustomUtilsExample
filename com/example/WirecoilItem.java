@@ -2,12 +2,13 @@ package com.example;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+
+import com.google.common.collect.HashBiMap;
 
 import me.benfah.cu.api.CustomBlock;
 import me.benfah.cu.api.CustomItem;
@@ -18,6 +19,8 @@ public class WirecoilItem extends CustomItem{
 	public WirecoilItem() {
 		super("wirecoil", "item/wirecoil", "Wirecoil");
 	}
+	
+	
 	
 	@Override
 	public void onInteract(PlayerInteractEvent e, EquipmentSlot es) {
@@ -38,8 +41,17 @@ public class WirecoilItem extends CustomItem{
 				{
 					CableLine cl = new CableLine();
 					String[] ls = item.getString("firstloc").split(";");
+					
+					
+					
 					Location firstloc = new Location(Bukkit.getWorld(ls[0]), Integer.parseInt(ls[1]), Integer.parseInt(ls[2]), Integer.parseInt(ls[3]));
-					cl.spawn(firstloc.getBlock(), b);
+					
+					Block fb = firstloc.getBlock();
+					RFCable rc = (RFCable) cb;
+					rc.addConnectant(fb.getLocation(), b.getLocation());
+					rc.addConnectant(b.getLocation(), fb.getLocation());
+					
+					cl.spawn(fb, b);
 					item.removeKey("firstloc");
 					setStackOfES(es, p, item.getItem());
 				}

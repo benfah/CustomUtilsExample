@@ -94,9 +94,11 @@ public class Declarator extends ASTList implements TokenId {
 
     public int getLocalVar() { return localVar; }
 
-    public String getTag() { return "decl"; }
+    @Override
+	public String getTag() { return "decl"; }
 
-    public void accept(Visitor v) throws CompileError {
+    @Override
+	public void accept(Visitor v) throws CompileError {
         v.atDeclarator(this);
     }
 

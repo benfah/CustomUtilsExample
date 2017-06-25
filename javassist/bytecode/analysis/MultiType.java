@@ -67,7 +67,8 @@ public class MultiType extends Type {
      * Gets the class that corresponds with this type. If this information
      * is not yet known, java.lang.Object will be returned.
      */
-    public CtClass getCtClass() {
+    @Override
+	public CtClass getCtClass() {
         if (resolved != null)
             return resolved.getCtClass();
 
@@ -77,34 +78,39 @@ public class MultiType extends Type {
     /**
      * Always returns null since this type is never used for an array.
      */
-    public Type getComponent() {
+    @Override
+	public Type getComponent() {
         return null;
     }
 
     /**
      * Always returns 1, since this type is a reference.
      */
-    public int getSize() {
+    @Override
+	public int getSize() {
         return 1;
     }
 
     /**
      * Always reutnrs false since this type is never used for an array
      */
-    public boolean isArray() {
+    @Override
+	public boolean isArray() {
         return false;
     }
 
     /**
      * Returns true if the internal state has changed.
      */
-    boolean popChanged() {
+    @Override
+	boolean popChanged() {
         boolean changed = this.changed;
         this.changed = false;
         return changed;
     }
 
-    public boolean isAssignableFrom(Type type) {
+    @Override
+	public boolean isAssignableFrom(Type type) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
@@ -168,7 +174,8 @@ public class MultiType extends Type {
      *
      * @return true
      */
-    public boolean isReference() {
+    @Override
+	public boolean isReference() {
        return true;
     }
 
@@ -211,7 +218,8 @@ public class MultiType extends Type {
         return false;
     }
 
-    public Type merge(Type type) {
+    @Override
+	public Type merge(Type type) {
         if (this == type)
             return this;
 
@@ -282,7 +290,8 @@ public class MultiType extends Type {
         return resolved;
     }
 
-    public boolean equals(Object o) {
+    @Override
+	public boolean equals(Object o) {
         if (! (o instanceof MultiType))
             return false;
 
@@ -295,7 +304,8 @@ public class MultiType extends Type {
         return interfaces.keySet().equals(multi.interfaces.keySet());
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         if (resolved != null)
             return resolved.toString();
 

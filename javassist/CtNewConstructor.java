@@ -149,7 +149,7 @@ public class CtNewConstructor {
             throw new CannotCompileException(e);
         }
 
-        code.add(Bytecode.RETURN);
+        code.add(Opcode.RETURN);
 
         // no need to construct a stack map table.
         cons.getMethodInfo2().setCodeAttribute(code.toCodeAttribute());

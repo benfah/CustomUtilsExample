@@ -110,7 +110,8 @@ public class Viewer extends ClassLoader {
     /**
      * Requests the class loader to load a class.
      */
-    protected synchronized Class loadClass(String name, boolean resolve)
+    @Override
+	protected synchronized Class loadClass(String name, boolean resolve)
         throws ClassNotFoundException
     {
         Class c = findLoadedClass(name);
@@ -136,7 +137,8 @@ public class Viewer extends ClassLoader {
      * <p>This method can be overridden by a subclass of
      * <code>Viewer</code>.
      */
-    protected Class findClass(String name) throws ClassNotFoundException {
+    @Override
+	protected Class findClass(String name) throws ClassNotFoundException {
         Class c = null;
         if (name.startsWith("java.") || name.startsWith("javax.")
             || name.equals("javassist.tools.web.Viewer"))

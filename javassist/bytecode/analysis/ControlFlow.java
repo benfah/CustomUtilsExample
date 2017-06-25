@@ -64,10 +64,12 @@ public class ControlFlow {
         methodInfo = minfo;
         frames = null;
         basicBlocks = (Block[])new BasicBlock.Maker() {
-            protected BasicBlock makeBlock(int pos) {
+            @Override
+			protected BasicBlock makeBlock(int pos) {
                 return new Block(pos, methodInfo);
             }
-            protected BasicBlock[] makeArray(int size) {
+            @Override
+			protected BasicBlock[] makeArray(int size) {
                 return new Block[size];
             }
         }.make(minfo);
@@ -156,8 +158,10 @@ public class ControlFlow {
         }
 
         Access access = new Access(nodes) {
-            BasicBlock[] exits(Node n) { return n.block.getExit(); }
-            BasicBlock[] entrances(Node n) { return n.block.entrances; }
+            @Override
+			BasicBlock[] exits(Node n) { return n.block.getExit(); }
+            @Override
+			BasicBlock[] entrances(Node n) { return n.block.entrances; }
         };
         nodes[0].makeDepth1stTree(null, visited, 0, distance, access);
         do {
@@ -202,8 +206,10 @@ public class ControlFlow {
         }
 
         Access access = new Access(nodes) {
-            BasicBlock[] exits(Node n) { return n.block.entrances; }
-            BasicBlock[] entrances(Node n) { return n.block.getExit(); }
+            @Override
+			BasicBlock[] exits(Node n) { return n.block.entrances; }
+            @Override
+			BasicBlock[] entrances(Node n) { return n.block.getExit(); }
         };
 
         int counter = 0;
@@ -252,7 +258,8 @@ public class ControlFlow {
             method = minfo;
         }
 
-        protected void toString2(StringBuffer sbuf) {
+        @Override
+		protected void toString2(StringBuffer sbuf) {
             super.toString2(sbuf);
             sbuf.append(", incoming{");
             for (int i = 0; i < entrances.length; i++)
@@ -349,7 +356,8 @@ public class ControlFlow {
         /**
          * Returns a <code>String</code> representation.
          */
-        public String toString() {
+        @Override
+		public String toString() {
             StringBuffer sbuf = new StringBuffer();
             sbuf.append("Node[pos=").append(block().position());
             sbuf.append(", parent=");

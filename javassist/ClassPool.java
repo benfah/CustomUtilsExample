@@ -76,7 +76,8 @@ public class ClassPool {
         if (ClassFile.MAJOR_VERSION < ClassFile.JAVA_9)
             try {
                 AccessController.doPrivileged(new PrivilegedExceptionAction(){
-                    public Object run() throws Exception{
+                    @Override
+					public Object run() throws Exception{
                         Class cl = Class.forName("java.lang.ClassLoader");
                         definePackage = cl.getDeclaredMethod("definePackage",
                                 new Class[] { String.class, String.class, String.class,
@@ -265,7 +266,8 @@ public class ClassPool {
     /**
      * Returns the class search path.
      */
-    public String toString() {
+    @Override
+	public String toString() {
         return source.toString();
     }
 
@@ -339,7 +341,8 @@ public class ClassPool {
      * @param name          an invalid class name (separeted by dots).
      * @deprecated
      */
-    public void recordInvalidClassName(String name) {
+    @Deprecated
+	public void recordInvalidClassName(String name) {
         // source.recordInvalidClassName(name);
     }
 
@@ -409,7 +412,7 @@ public class ClassPool {
      * name.  Don't delegate to the parent.
      */
     synchronized void classNameChanged(String oldname, CtClass clazz) {
-        CtClass c = (CtClass)getCached(oldname);
+        CtClass c = getCached(oldname);
         if (c == clazz)             // must check this equation.
             removeCached(oldname);  // see getAndRename().
 
@@ -1100,7 +1103,8 @@ public class ClassPool {
      * overriding this method should be modified.  It should override
      * {@link #toClass(CtClass,ClassLoader,ProtectionDomain)}.
      */
-    public Class toClass(CtClass ct, ClassLoader loader)
+    @Deprecated
+	public Class toClass(CtClass ct, ClassLoader loader)
         throws CannotCompileException
     {
         return toClass(ct, loader, null);
@@ -1172,7 +1176,8 @@ public class ClassPool {
      * @since 3.16
      * @deprecated
      */
-    public void makePackage(ClassLoader loader, String name)
+    @Deprecated
+	public void makePackage(ClassLoader loader, String name)
         throws CannotCompileException
     {
         if (definePackage == null)

@@ -43,21 +43,24 @@ class CtNewClass extends CtClassType {
         hasConstructor = isInterface;
     }
 
-    protected void extendToString(StringBuffer buffer) {
+    @Override
+	protected void extendToString(StringBuffer buffer) {
         if (hasConstructor)
             buffer.append("hasConstructor ");
 
         super.extendToString(buffer);
     }
 
-    public void addConstructor(CtConstructor c)
+    @Override
+	public void addConstructor(CtConstructor c)
         throws CannotCompileException
     {
         hasConstructor = true;
         super.addConstructor(c);
     }
 
-    public void toBytecode(DataOutputStream out)
+    @Override
+	public void toBytecode(DataOutputStream out)
         throws CannotCompileException, IOException
     {
         if (!hasConstructor)

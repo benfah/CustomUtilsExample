@@ -83,16 +83,19 @@ public class SignatureAttribute extends AttributeInfo {
      * @param classnames        pairs of replaced and substituted
      *                          class names.
      */
-    public AttributeInfo copy(ConstPool newCp, Map classnames) {
+    @Override
+	public AttributeInfo copy(ConstPool newCp, Map classnames) {
         return new SignatureAttribute(newCp, getSignature());
     }
 
-    void renameClass(String oldname, String newname) {
+    @Override
+	void renameClass(String oldname, String newname) {
         String sig = renameClass(getSignature(), oldname, newname);
         setSignature(sig);
     }
 
-    void renameClass(Map classnames) {
+    @Override
+	void renameClass(Map classnames) {
         String sig = renameClass(getSignature(), classnames);
         setSignature(sig);
     }
@@ -225,7 +228,8 @@ public class SignatureAttribute extends AttributeInfo {
         /**
          * Returns the string representation.
          */
-        public String toString() {
+        @Override
+		public String toString() {
             StringBuffer sbuf = new StringBuffer();
 
             TypeParameter.toString(sbuf, params);
@@ -314,7 +318,8 @@ public class SignatureAttribute extends AttributeInfo {
         /**
          * Returns the string representation.
          */
-        public String toString() {
+        @Override
+		public String toString() {
             StringBuffer sbuf = new StringBuffer();
 
             TypeParameter.toString(sbuf, typeParams);
@@ -424,7 +429,8 @@ public class SignatureAttribute extends AttributeInfo {
         /**
          * Returns the string representation.
          */
-        public String toString() {
+        @Override
+		public String toString() {
             StringBuffer sbuf = new StringBuffer(getName());
             if (superClass != null)
                 sbuf.append(" extends ").append(superClass.toString());
@@ -550,7 +556,8 @@ public class SignatureAttribute extends AttributeInfo {
         /**
          * Returns the string representation.
          */
-        public String toString() {
+        @Override
+		public String toString() {
             if (wildcard == '*')
                 return "?";
 
@@ -634,11 +641,13 @@ public class SignatureAttribute extends AttributeInfo {
         /**
          * Returns the string representation.
          */
-        public String toString() {
+        @Override
+		public String toString() {
             return Descriptor.toClassName(Character.toString(descriptor));
         }
 
-        void encode(StringBuffer sb) {
+        @Override
+		void encode(StringBuffer sb) {
             sb.append(descriptor);
         }
     }
@@ -730,7 +739,8 @@ public class SignatureAttribute extends AttributeInfo {
         /**
          * Returns the string representation.
          */
-        public String toString() {
+        @Override
+		public String toString() {
             StringBuffer sbuf = new StringBuffer();
             ClassType parent = getDeclaringClass();
             if (parent != null)
@@ -762,7 +772,8 @@ public class SignatureAttribute extends AttributeInfo {
          * For example, if the type is a nested class {@code foo.Bar.Baz},
          * then {@code foo.Bar$Baz} is returned.
          */
-        public String jvmTypeName() {
+        @Override
+		public String jvmTypeName() {
             StringBuffer sbuf = new StringBuffer();
             ClassType parent = getDeclaringClass();
             if (parent != null)
@@ -771,7 +782,8 @@ public class SignatureAttribute extends AttributeInfo {
             return toString2(sbuf);
         }
 
-        void encode(StringBuffer sb) {
+        @Override
+		void encode(StringBuffer sb) {
             sb.append('L');
             encode2(sb);
             sb.append(';');
@@ -818,7 +830,8 @@ public class SignatureAttribute extends AttributeInfo {
          * Returns the class that declares this nested class.
          * This nested class is a member of that declaring class.
          */
-        public ClassType getDeclaringClass() { return parent; }
+        @Override
+		public ClassType getDeclaringClass() { return parent; }
     }
 
     /**
@@ -854,7 +867,8 @@ public class SignatureAttribute extends AttributeInfo {
         /**
          * Returns the string representation.
          */
-        public String toString() {
+        @Override
+		public String toString() {
             StringBuffer sbuf = new StringBuffer(componentType.toString());
             for (int i = 0; i < dim; i++)
                 sbuf.append("[]");
@@ -862,7 +876,8 @@ public class SignatureAttribute extends AttributeInfo {
             return sbuf.toString();
         }
 
-        void encode(StringBuffer sb) {
+        @Override
+		void encode(StringBuffer sb) {
             for (int i = 0; i < dim; i++)
                 sb.append('[');
 
@@ -899,11 +914,13 @@ public class SignatureAttribute extends AttributeInfo {
         /**
          * Returns the string representation.
          */
-        public String toString() {
+        @Override
+		public String toString() {
             return name;
         }
 
-        void encode(StringBuffer sb) {
+        @Override
+		void encode(StringBuffer sb) {
             sb.append('T').append(name).append(';');
         }
     }

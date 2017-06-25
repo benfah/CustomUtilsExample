@@ -47,7 +47,8 @@ public class MethodCall extends Expr {
      * Returns the method or constructor containing the method-call
      * expression represented by this object.
      */
-    public CtBehavior where() { return super.where(); }
+    @Override
+	public CtBehavior where() { return super.where(); }
 
     /**
      * Returns the line number of the source line containing the
@@ -55,7 +56,8 @@ public class MethodCall extends Expr {
      *
      * @return -1       if this information is not available.
      */
-    public int getLineNumber() {
+    @Override
+	public int getLineNumber() {
         return super.getLineNumber();
     }
 
@@ -64,7 +66,8 @@ public class MethodCall extends Expr {
      *
      * @return null     if this information is not available.
      */
-    public String getFileName() {
+    @Override
+	public String getFileName() {
         return super.getFileName();
     }
 
@@ -137,7 +140,8 @@ public class MethodCall extends Expr {
      * including the expression can catch and the exceptions that
      * the throws declaration allows the method to throw.
      */
-    public CtClass[] mayThrow() {
+    @Override
+	public CtClass[] mayThrow() {
         return super.mayThrow();
     }
 
@@ -176,7 +180,8 @@ public class MethodCall extends Expr {
      *
      * @param statement         a Java statement except try-catch.
      */
-    public void replace(String statement) throws CannotCompileException {
+    @Override
+	public void replace(String statement) throws CannotCompileException {
         thisClass.getClassFile();   // to call checkModify().
         ConstPool constPool = getConstPool();
         int pos = currentPos;

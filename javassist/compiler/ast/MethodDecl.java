@@ -40,7 +40,8 @@ public class MethodDecl extends ASTList {
 
     public Stmnt getBody() { return (Stmnt)sublist(4).head(); }
 
-    public void accept(Visitor v) throws CompileError {
+    @Override
+	public void accept(Visitor v) throws CompileError {
         v.atMethodDecl(this);
     }
 }

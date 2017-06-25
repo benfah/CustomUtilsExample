@@ -42,14 +42,16 @@ public class TransformBefore extends TransformCall {
         saveCode = loadCode = null;
     }
 
-    public void initialize(ConstPool cp, CodeAttribute attr) {
+    @Override
+	public void initialize(ConstPool cp, CodeAttribute attr) {
         super.initialize(cp, attr);
         locals = 0;
         maxLocals = attr.getMaxLocals();
         saveCode = loadCode = null;
     }
 
-    protected int match(int c, int pos, CodeIterator iterator,
+    @Override
+	protected int match(int c, int pos, CodeIterator iterator,
                         int typedesc, ConstPool cp) throws BadBytecode
     {
         if (newIndex == 0) {
@@ -78,7 +80,8 @@ public class TransformBefore extends TransformCall {
         return iterator.next();
     }
 
-    public int extraLocals() { return locals; }
+    @Override
+	public int extraLocals() { return locals; }
 
     protected void makeCode(CtClass[] paramTypes, ConstPool cp) {
         Bytecode save = new Bytecode(cp, 0, 0);

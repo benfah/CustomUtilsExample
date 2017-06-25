@@ -26,8 +26,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import java.lang.management.ManagementFactory;
-import com.sun.tools.attach.VirtualMachine;
-
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;

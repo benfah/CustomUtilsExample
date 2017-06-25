@@ -28,17 +28,20 @@ final class CtArray extends CtClass {
         pool = cp;
     }
 
-    public ClassPool getClassPool() {
+    @Override
+	public ClassPool getClassPool() {
         return pool;
     }
 
-    public boolean isArray() {
+    @Override
+	public boolean isArray() {
         return true;
     }
 
     private CtClass[] interfaces = null;
 
-    public int getModifiers() {
+    @Override
+	public int getModifiers() {
         int mod = Modifier.FINAL;
         try {
             mod |= getComponentType().getModifiers()
@@ -48,7 +51,8 @@ final class CtArray extends CtClass {
         return mod;
     }
 
-    public CtClass[] getInterfaces() throws NotFoundException {
+    @Override
+	public CtClass[] getInterfaces() throws NotFoundException {
         if (interfaces == null) {
             Class[] intfs = Object[].class.getInterfaces();
             // java.lang.Cloneable and java.io.Serializable.
@@ -61,7 +65,8 @@ final class CtArray extends CtClass {
         return interfaces;
     }
 
-    public boolean subtypeOf(CtClass clazz) throws NotFoundException {
+    @Override
+	public boolean subtypeOf(CtClass clazz) throws NotFoundException {
         if (super.subtypeOf(clazz))
             return true;
 
@@ -78,16 +83,19 @@ final class CtArray extends CtClass {
             && getComponentType().subtypeOf(clazz.getComponentType());
     }
 
-    public CtClass getComponentType() throws NotFoundException {
+    @Override
+	public CtClass getComponentType() throws NotFoundException {
         String name = getName();
         return pool.get(name.substring(0, name.length() - 2));
     }
 
-    public CtClass getSuperclass() throws NotFoundException {
+    @Override
+	public CtClass getSuperclass() throws NotFoundException {
         return pool.get(javaLangObject);
     }
 
-    public CtMethod[] getMethods() {
+    @Override
+	public CtMethod[] getMethods() {
         try {
             return getSuperclass().getMethods();
         }
@@ -96,13 +104,15 @@ final class CtArray extends CtClass {
         }
     }
 
-    public CtMethod getMethod(String name, String desc)
+    @Override
+	public CtMethod getMethod(String name, String desc)
         throws NotFoundException
     {
         return getSuperclass().getMethod(name, desc);
     }
 
-    public CtConstructor[] getConstructors() {
+    @Override
+	public CtConstructor[] getConstructors() {
         try {
             return getSuperclass().getConstructors();
         }

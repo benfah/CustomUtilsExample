@@ -137,7 +137,8 @@ public class MethodInfo {
     /**
      * Returns a string representation of the object.
      */
-    public String toString() {
+    @Override
+	public String toString() {
         return getName() + " " + getDescriptor();
     }
 

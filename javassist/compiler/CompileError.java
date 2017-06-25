@@ -43,11 +43,13 @@ public class CompileError extends Exception {
 
     public Lex getLex() { return lex; }
 
-    public String getMessage() {
+    @Override
+	public String getMessage() {
         return reason;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return "compile error: " + reason;
     }
 }

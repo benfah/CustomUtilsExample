@@ -30,11 +30,13 @@ public class InstanceOfExpr extends CastExpr {
         super(type, dim, expr);
     }
 
-    public String getTag() {
+    @Override
+	public String getTag() {
         return "instanceof:" + castType + ":" + arrayDim;
     }
 
-    public void accept(Visitor v) throws CompileError {
+    @Override
+	public void accept(Visitor v) throws CompileError {
         v.atInstanceOfExpr(this);
     }
 }

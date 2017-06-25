@@ -31,7 +31,8 @@ class SecurityActions {
         else {
             return (Method[]) AccessController
                     .doPrivileged(new PrivilegedAction() {
-                        public Object run() {
+                        @Override
+						public Object run() {
                             return clazz.getDeclaredMethods();
                         }
                     });
@@ -44,7 +45,8 @@ class SecurityActions {
         else {
             return (Constructor[]) AccessController
                     .doPrivileged(new PrivilegedAction() {
-                        public Object run() {
+                        @Override
+						public Object run() {
                             return clazz.getDeclaredConstructors();
                         }
                     });
@@ -59,7 +61,8 @@ class SecurityActions {
             try {
                 return (Method) AccessController
                         .doPrivileged(new PrivilegedExceptionAction() {
-                            public Object run() throws Exception {
+                            @Override
+							public Object run() throws Exception {
                                 return clazz.getDeclaredMethod(name, types);
                             }
                         });
@@ -83,7 +86,8 @@ class SecurityActions {
             try {
                 return (Constructor) AccessController
                         .doPrivileged(new PrivilegedExceptionAction() {
-                            public Object run() throws Exception {
+                            @Override
+							public Object run() throws Exception {
                                 return clazz.getDeclaredConstructor(types);
                             }
                         });
@@ -103,7 +107,8 @@ class SecurityActions {
             ao.setAccessible(accessible);
         else {
             AccessController.doPrivileged(new PrivilegedAction() {
-                public Object run() {
+                @Override
+				public Object run() {
                     ao.setAccessible(accessible);
                     return null;
                 }
@@ -119,7 +124,8 @@ class SecurityActions {
         else {
             try {
                 AccessController.doPrivileged(new PrivilegedExceptionAction() {
-                    public Object run() throws Exception {
+                    @Override
+					public Object run() throws Exception {
                         fld.set(target, value);
                         return null;
                     }

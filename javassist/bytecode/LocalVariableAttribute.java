@@ -53,7 +53,8 @@ public class LocalVariableAttribute extends AttributeInfo {
      * @since 3.1
      * @deprecated
      */
-    public LocalVariableAttribute(ConstPool cp, String name) {
+    @Deprecated
+	public LocalVariableAttribute(ConstPool cp, String name) {
         super(cp, name, new byte[2]);
         ByteArray.write16bit(0, info, 0);
     }
@@ -93,7 +94,8 @@ public class LocalVariableAttribute extends AttributeInfo {
         info = newInfo;
     }
 
-    void renameClass(String oldname, String newname) {
+    @Override
+	void renameClass(String oldname, String newname) {
         ConstPool cp = getConstPool();
         int n = tableLength();
         for (int i = 0; i < n; ++i) {
@@ -111,7 +113,8 @@ public class LocalVariableAttribute extends AttributeInfo {
         return Descriptor.rename(desc, oldname, newname);
     }
 
-    void renameClass(Map classnames) {
+    @Override
+	void renameClass(Map classnames) {
         ConstPool cp = getConstPool();
         int n = tableLength();
         for (int i = 0; i < n; ++i) {
@@ -291,7 +294,8 @@ public class LocalVariableAttribute extends AttributeInfo {
      * @param newCp     the constant pool table used by the new copy.
      * @param classnames        should be null.
      */
-    public AttributeInfo copy(ConstPool newCp, Map classnames) {
+    @Override
+	public AttributeInfo copy(ConstPool newCp, Map classnames) {
         byte[] src = get();
         byte[] dest = new byte[src.length];
         ConstPool cp = getConstPool();

@@ -34,7 +34,8 @@ public class MultiArrayType extends Type {
         this.dims = dims;
     }
 
-    public CtClass getCtClass() {
+    @Override
+	public CtClass getCtClass() {
         CtClass clazz = component.getCtClass();
         if (clazz == null)
             return null;
@@ -52,31 +53,38 @@ public class MultiArrayType extends Type {
         }
     }
 
-    boolean popChanged() {
+    @Override
+	boolean popChanged() {
         return component.popChanged();
     }
 
-    public int getDimensions() {
+    @Override
+	public int getDimensions() {
         return dims;
     }
 
-    public Type getComponent() {
+    @Override
+	public Type getComponent() {
        return dims == 1 ? (Type)component : new MultiArrayType(component, dims - 1);
     }
 
-    public int getSize() {
+    @Override
+	public int getSize() {
         return 1;
     }
 
-    public boolean isArray() {
+    @Override
+	public boolean isArray() {
         return true;
     }
 
-    public boolean isAssignableFrom(Type type) {
+    @Override
+	public boolean isAssignableFrom(Type type) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
-    public boolean isReference() {
+    @Override
+	public boolean isReference() {
        return true;
     }
 
@@ -115,7 +123,8 @@ public class MultiArrayType extends Type {
         return component.isAssignableTo(typeRoot);
     }
 
-    public boolean equals(Object o) {
+    @Override
+	public boolean equals(Object o) {
         if (! (o instanceof MultiArrayType))
             return false;
         MultiArrayType multi = (MultiArrayType)o;
@@ -123,7 +132,8 @@ public class MultiArrayType extends Type {
         return component.equals(multi.component) && dims == multi.dims;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         // follows the same detailed formating scheme as component
         return arrayName(component.toString(), dims);
     }

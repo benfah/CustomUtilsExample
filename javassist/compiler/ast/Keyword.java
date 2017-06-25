@@ -30,7 +30,9 @@ public class Keyword extends ASTree {
 
     public int get() { return tokenId; }
 
-    public String toString() { return "id:" + tokenId; }
+    @Override
+	public String toString() { return "id:" + tokenId; }
 
-    public void accept(Visitor v) throws CompileError { v.atKeyword(this); }
+    @Override
+	public void accept(Visitor v) throws CompileError { v.atKeyword(this); }
 }

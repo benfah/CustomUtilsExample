@@ -64,7 +64,8 @@ public class ClassMemberValue extends MemberValue {
         setValue("java.lang.Class");
     }
 
-    Object getValue(ClassLoader cl, ClassPool cp, Method m)
+    @Override
+	Object getValue(ClassLoader cl, ClassPool cp, Method m)
             throws ClassNotFoundException {
         final String classname = getValue();
         if (classname.equals("void"))
@@ -89,7 +90,8 @@ public class ClassMemberValue extends MemberValue {
             return loadClass(cl, classname);
     }
 
-    Class getType(ClassLoader cl) throws ClassNotFoundException {
+    @Override
+	Class getType(ClassLoader cl) throws ClassNotFoundException {
         return loadClass(cl, "java.lang.Class");
     }
 
@@ -120,21 +122,24 @@ public class ClassMemberValue extends MemberValue {
     /**
      * Obtains the string representation of this object.
      */
-    public String toString() {
+    @Override
+	public String toString() {
         return getValue().replace('$', '.') + ".class";
     }
 
     /**
      * Writes the value.
      */
-    public void write(AnnotationsWriter writer) throws IOException {
+    @Override
+	public void write(AnnotationsWriter writer) throws IOException {
         writer.classInfoIndex(cp.getUtf8Info(valueIndex));
     }
 
     /**
      * Accepts a visitor.
      */
-    public void accept(MemberValueVisitor visitor) {
+    @Override
+	public void accept(MemberValueVisitor visitor) {
         visitor.visitClassMemberValue(this);
     }
 }

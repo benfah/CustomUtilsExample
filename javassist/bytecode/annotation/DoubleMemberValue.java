@@ -60,11 +60,13 @@ public class DoubleMemberValue extends MemberValue {
         setValue(0.0);
     }
 
-    Object getValue(ClassLoader cl, ClassPool cp, Method m) {
+    @Override
+	Object getValue(ClassLoader cl, ClassPool cp, Method m) {
         return Double.valueOf(getValue());
     }
 
-    Class getType(ClassLoader cl) {
+    @Override
+	Class getType(ClassLoader cl) {
         return double.class;
     }
 
@@ -85,21 +87,24 @@ public class DoubleMemberValue extends MemberValue {
     /**
      * Obtains the string representation of this object.
      */
-    public String toString() {
+    @Override
+	public String toString() {
         return Double.toString(getValue());
     }
 
     /**
      * Writes the value.
      */
-    public void write(AnnotationsWriter writer) throws IOException {
+    @Override
+	public void write(AnnotationsWriter writer) throws IOException {
         writer.constValueIndex(getValue());
     }
 
     /**
      * Accepts a visitor.
      */
-    public void accept(MemberValueVisitor visitor) {
+    @Override
+	public void accept(MemberValueVisitor visitor) {
         visitor.visitDoubleMemberValue(this);
     }
 }

@@ -22,7 +22,6 @@ import java.io.ObjectStreamException;
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
-import java.security.ProtectionDomain;
 
 /**
  * A proxy object is converted into an instance of this class
@@ -62,7 +61,8 @@ class SerializedProxy implements Serializable {
     protected Class loadClass(final String className) throws ClassNotFoundException {
         try {
             return (Class)AccessController.doPrivileged(new PrivilegedExceptionAction(){
-                public Object run() throws Exception{
+                @Override
+				public Object run() throws Exception{
                     ClassLoader cl = Thread.currentThread().getContextClassLoader();
                     return Class.forName(className, true, cl);
                 }

@@ -43,7 +43,8 @@ final public class TransformFieldAccess extends Transformer {
         this.constPool = null;
     }
 
-    public void initialize(ConstPool cp, CodeAttribute attr) {
+    @Override
+	public void initialize(ConstPool cp, CodeAttribute attr) {
         if (constPool != cp)
             newIndex = 0;
     }
@@ -54,7 +55,8 @@ final public class TransformFieldAccess extends Transformer {
      * in a superclass of the class in which the original field is
      * declared.
      */
-    public int transform(CtClass clazz, int pos,
+    @Override
+	public int transform(CtClass clazz, int pos,
                          CodeIterator iterator, ConstPool cp)
     {
         int c = iterator.byteAt(pos);

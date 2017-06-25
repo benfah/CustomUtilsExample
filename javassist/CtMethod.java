@@ -155,7 +155,8 @@ public final class CtMethod extends CtBehavior {
      * If two methods have the same name and signature, then
      * the hash codes for the two methods are equal.
      */
-    public int hashCode() {
+    @Override
+	public int hashCode() {
         return getStringRep().hashCode();
     }
 
@@ -163,7 +164,8 @@ public final class CtMethod extends CtBehavior {
      * This method is invoked when setName() or replaceClassName()
      * in CtClass is called.
      */
-    void nameReplaced() {
+    @Override
+	void nameReplaced() {
         cachedStringRep = null;
     }
 
@@ -181,7 +183,8 @@ public final class CtMethod extends CtBehavior {
      * Indicates whether <code>obj</code> has the same name and the
      * same signature as this method.
      */
-    public boolean equals(Object obj) {
+    @Override
+	public boolean equals(Object obj) {
         return obj != null && obj instanceof CtMethod
                && ((CtMethod)obj).getStringRep().equals(getStringRep());
     }
@@ -192,7 +195,8 @@ public final class CtMethod extends CtBehavior {
      *
      * @since 3.5
      */
-    public String getLongName() {
+    @Override
+	public String getLongName() {
         return getDeclaringClass().getName() + "."
                + getName() + Descriptor.toString(getSignature());
     }
@@ -200,7 +204,8 @@ public final class CtMethod extends CtBehavior {
     /**
      * Obtains the name of this method.
      */
-    public String getName() {
+    @Override
+	public String getName() {
         return methodInfo.getName();
     }
 
@@ -223,7 +228,8 @@ public final class CtMethod extends CtBehavior {
      * Returns true if the method body is empty, that is, <code>{}</code>.
      * It also returns true if the method is an abstract method.
      */
-    public boolean isEmpty() {
+    @Override
+	public boolean isEmpty() {
         CodeAttribute ca = getMethodInfo2().getCodeAttribute();
         if (ca == null)         // abstract or native
             return (getModifiers() & Modifier.ABSTRACT) != 0;
@@ -380,16 +386,19 @@ public final class CtMethod extends CtBehavior {
             param = i;
         }
 
-        int compile(Bytecode code) throws CannotCompileException {
+        @Override
+		int compile(Bytecode code) throws CannotCompileException {
             code.addIconst(param);
             return 1;
         }
 
-        String descriptor() {
+        @Override
+		String descriptor() {
             return "([Ljava/lang/Object;I)Ljava/lang/Object;";
         }
 
-        String constDescriptor() {
+        @Override
+		String constDescriptor() {
             return "([Ljava/lang/Object;I)V";
         }
     }
@@ -401,16 +410,19 @@ public final class CtMethod extends CtBehavior {
             param = l;
         }
 
-        int compile(Bytecode code) throws CannotCompileException {
+        @Override
+		int compile(Bytecode code) throws CannotCompileException {
             code.addLconst(param);
             return 2;
         }
 
-        String descriptor() {
+        @Override
+		String descriptor() {
             return "([Ljava/lang/Object;J)Ljava/lang/Object;";
         }
 
-        String constDescriptor() {
+        @Override
+		String constDescriptor() {
             return "([Ljava/lang/Object;J)V";
         }
     }
@@ -422,16 +434,19 @@ public final class CtMethod extends CtBehavior {
             param = s;
         }
 
-        int compile(Bytecode code) throws CannotCompileException {
+        @Override
+		int compile(Bytecode code) throws CannotCompileException {
             code.addLdc(param);
             return 1;
         }
 
-        String descriptor() {
+        @Override
+		String descriptor() {
             return "([Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;";
         }
 
-        String constDescriptor() {
+        @Override
+		String constDescriptor() {
             return "([Ljava/lang/Object;Ljava/lang/String;)V";
         }
     }

@@ -51,7 +51,8 @@ public class ArrayMemberValue extends MemberValue {
         values = null;
     }
 
-    Object getValue(ClassLoader cl, ClassPool cp, Method method)
+    @Override
+	Object getValue(ClassLoader cl, ClassPool cp, Method method)
         throws ClassNotFoundException
     {
         if (values == null)
@@ -76,7 +77,8 @@ public class ArrayMemberValue extends MemberValue {
         return a;
     }
 
-    Class getType(ClassLoader cl) throws ClassNotFoundException {
+    @Override
+	Class getType(ClassLoader cl) throws ClassNotFoundException {
         if (type == null)
             throw new ClassNotFoundException("no array type specified");
 
@@ -112,7 +114,8 @@ public class ArrayMemberValue extends MemberValue {
     /**
      * Obtains the string representation of this object.
      */
-    public String toString() {
+    @Override
+	public String toString() {
         StringBuffer buf = new StringBuffer("{");
         if (values != null) {
             for (int i = 0; i < values.length; i++) {
@@ -129,7 +132,8 @@ public class ArrayMemberValue extends MemberValue {
     /**
      * Writes the value.
      */
-    public void write(AnnotationsWriter writer) throws IOException {
+    @Override
+	public void write(AnnotationsWriter writer) throws IOException {
         int num = values == null ? 0 : values.length;
         writer.arrayValue(num);
         for (int i = 0; i < num; ++i)
@@ -139,7 +143,8 @@ public class ArrayMemberValue extends MemberValue {
     /**
      * Accepts a visitor.
      */
-    public void accept(MemberValueVisitor visitor) {
+    @Override
+	public void accept(MemberValueVisitor visitor) {
         visitor.visitArrayMemberValue(this);
     }
 }

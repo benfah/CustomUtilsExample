@@ -1295,7 +1295,8 @@ abstract class ConstInfo {
     public abstract void write(DataOutputStream out) throws IOException;
     public abstract void print(PrintWriter out);
 
-    public String toString() {
+    @Override
+	public String toString() {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         PrintWriter out = new PrintWriter(bout);
         print(out);
@@ -1308,15 +1309,19 @@ abstract class ConstInfo {
 class ConstInfoPadding extends ConstInfo {
     public ConstInfoPadding(int i) { super(i); }
 
-    public int getTag() { return 0; }
+    @Override
+	public int getTag() { return 0; }
 
-    public int copy(ConstPool src, ConstPool dest, Map map) {
+    @Override
+	public int copy(ConstPool src, ConstPool dest, Map map) {
         return dest.addConstInfoPadding();
     }
 
-    public void write(DataOutputStream out) throws IOException {}
+    @Override
+	public void write(DataOutputStream out) throws IOException {}
 
-    public void print(PrintWriter out) {
+    @Override
+	public void print(PrintWriter out) {
         out.println("padding");
     }
 }
@@ -1335,19 +1340,24 @@ class ClassInfo extends ConstInfo {
         name = in.readUnsignedShort();
     }
 
-    public int hashCode() { return name; }
+    @Override
+	public int hashCode() { return name; }
 
-    public boolean equals(Object obj) {
+    @Override
+	public boolean equals(Object obj) {
         return obj instanceof ClassInfo && ((ClassInfo)obj).name == name;
     }
 
-    public int getTag() { return tag; }
+    @Override
+	public int getTag() { return tag; }
 
-    public String getClassName(ConstPool cp) {
+    @Override
+	public String getClassName(ConstPool cp) {
         return cp.getUtf8Info(name);
     }
 
-    public void renameClass(ConstPool cp, String oldName, String newName, HashMap cache) {
+    @Override
+	public void renameClass(ConstPool cp, String oldName, String newName, HashMap cache) {
         String nameStr = cp.getUtf8Info(name);
         String newNameStr = null;
         if (nameStr.equals(oldName))
@@ -1368,7 +1378,8 @@ class ClassInfo extends ConstInfo {
             }
     }
 
-    public void renameClass(ConstPool cp, Map map, HashMap cache) {
+    @Override
+	public void renameClass(ConstPool cp, Map map, HashMap cache) {
         String oldName = cp.getUtf8Info(name);
         String newName = null;
         if (oldName.charAt(0) == '[') {
@@ -1393,7 +1404,8 @@ class ClassInfo extends ConstInfo {
         }
     }
 
-    public int copy(ConstPool src, ConstPool dest, Map map) {
+    @Override
+	public int copy(ConstPool src, ConstPool dest, Map map) {
         String classname = src.getUtf8Info(name);
         if (map != null) {
             String newname = (String)map.get(classname);
@@ -1404,12 +1416,14 @@ class ClassInfo extends ConstInfo {
         return dest.addClassInfo(classname);
     }
 
-    public void write(DataOutputStream out) throws IOException {
+    @Override
+	public void write(DataOutputStream out) throws IOException {
         out.writeByte(tag);
         out.writeShort(name);
     }
 
-    public void print(PrintWriter out) {
+    @Override
+	public void print(PrintWriter out) {
         out.print("Class #");
         out.println(name);
     }
@@ -1432,9 +1446,11 @@ class NameAndTypeInfo extends ConstInfo {
         typeDescriptor = in.readUnsignedShort();
     }
 
-    public int hashCode() { return (memberName << 16) ^ typeDescriptor; }
+    @Override
+	public int hashCode() { return (memberName << 16) ^ typeDescriptor; }
 
-    public boolean equals(Object obj) {
+    @Override
+	public boolean equals(Object obj) {
         if (obj instanceof NameAndTypeInfo) {
             NameAndTypeInfo nti = (NameAndTypeInfo)obj;
             return nti.memberName == memberName && nti.typeDescriptor == typeDescriptor;
@@ -1443,9 +1459,11 @@ class NameAndTypeInfo extends ConstInfo {
             return false;
     }
 
-    public int getTag() { return tag; }
+    @Override
+	public int getTag() { return tag; }
 
-    public void renameClass(ConstPool cp, String oldName, String newName, HashMap cache) {
+    @Override
+	public void renameClass(ConstPool cp, String oldName, String newName, HashMap cache) {
         String type = cp.getUtf8Info(typeDescriptor);
         String type2 = Descriptor.rename(type, oldName, newName);
         if (type != type2)
@@ -1458,7 +1476,8 @@ class NameAndTypeInfo extends ConstInfo {
             }
     }
 
-    public void renameClass(ConstPool cp, Map map, HashMap cache) {
+    @Override
+	public void renameClass(ConstPool cp, Map map, HashMap cache) {
         String type = cp.getUtf8Info(typeDescriptor);
         String type2 = Descriptor.rename(type, map);
         if (type != type2)
@@ -1471,7 +1490,8 @@ class NameAndTypeInfo extends ConstInfo {
             }
     }
 
-    public int copy(ConstPool src, ConstPool dest, Map map) {
+    @Override
+	public int copy(ConstPool src, ConstPool dest, Map map) {
         String mname = src.getUtf8Info(memberName);
         String tdesc = src.getUtf8Info(typeDescriptor);
         tdesc = Descriptor.rename(tdesc, map);
@@ -1479,13 +1499,15 @@ class NameAndTypeInfo extends ConstInfo {
                                        dest.addUtf8Info(tdesc));
     }
 
-    public void write(DataOutputStream out) throws IOException {
+    @Override
+	public void write(DataOutputStream out) throws IOException {
         out.writeByte(tag);
         out.writeShort(memberName);
         out.writeShort(typeDescriptor);
     }
 
-    public void print(PrintWriter out) {
+    @Override
+	public void print(PrintWriter out) {
         out.print("NameAndType #");
         out.print(memberName);
         out.print(", type #");
@@ -1509,9 +1531,11 @@ abstract class MemberrefInfo extends ConstInfo {
         nameAndTypeIndex = in.readUnsignedShort();
     }
 
-    public int hashCode() { return (classIndex << 16) ^ nameAndTypeIndex; }
+    @Override
+	public int hashCode() { return (classIndex << 16) ^ nameAndTypeIndex; }
 
-    public boolean equals(Object obj) {
+    @Override
+	public boolean equals(Object obj) {
         if (obj instanceof MemberrefInfo) {
             MemberrefInfo mri = (MemberrefInfo)obj;
             return mri.classIndex == classIndex && mri.nameAndTypeIndex == nameAndTypeIndex
@@ -1521,7 +1545,8 @@ abstract class MemberrefInfo extends ConstInfo {
             return false;
     }
 
-    public int copy(ConstPool src, ConstPool dest, Map map) {
+    @Override
+	public int copy(ConstPool src, ConstPool dest, Map map) {
         int classIndex2 = src.getItem(classIndex).copy(src, dest, map);
         int ntIndex2 = src.getItem(nameAndTypeIndex).copy(src, dest, map);
         return copy2(dest, classIndex2, ntIndex2);
@@ -1529,13 +1554,15 @@ abstract class MemberrefInfo extends ConstInfo {
 
     abstract protected int copy2(ConstPool dest, int cindex, int ntindex);
 
-    public void write(DataOutputStream out) throws IOException {
+    @Override
+	public void write(DataOutputStream out) throws IOException {
         out.writeByte(getTag());
         out.writeShort(classIndex);
         out.writeShort(nameAndTypeIndex);
     }
 
-    public void print(PrintWriter out) {
+    @Override
+	public void print(PrintWriter out) {
         out.print(getTagName() + " #");
         out.print(classIndex);
         out.print(", name&type #");
@@ -1556,11 +1583,14 @@ class FieldrefInfo extends MemberrefInfo {
         super(in, thisIndex);
     }
 
-    public int getTag() { return tag; }
+    @Override
+	public int getTag() { return tag; }
 
-    public String getTagName() { return "Field"; }
+    @Override
+	public String getTagName() { return "Field"; }
 
-    protected int copy2(ConstPool dest, int cindex, int ntindex) {
+    @Override
+	protected int copy2(ConstPool dest, int cindex, int ntindex) {
         return dest.addFieldrefInfo(cindex, ntindex);
     }
 }
@@ -1576,11 +1606,14 @@ class MethodrefInfo extends MemberrefInfo {
         super(in, thisIndex);
     }
 
-    public int getTag() { return tag; }
+    @Override
+	public int getTag() { return tag; }
 
-    public String getTagName() { return "Method"; }
+    @Override
+	public String getTagName() { return "Method"; }
 
-    protected int copy2(ConstPool dest, int cindex, int ntindex) {
+    @Override
+	protected int copy2(ConstPool dest, int cindex, int ntindex) {
         return dest.addMethodrefInfo(cindex, ntindex);
     }
 }
@@ -1596,11 +1629,14 @@ class InterfaceMethodrefInfo extends MemberrefInfo {
         super(in, thisIndex);
     }
 
-    public int getTag() { return tag; }
+    @Override
+	public int getTag() { return tag; }
 
-    public String getTagName() { return "Interface"; }
+    @Override
+	public String getTagName() { return "Interface"; }
 
-    protected int copy2(ConstPool dest, int cindex, int ntindex) {
+    @Override
+	protected int copy2(ConstPool dest, int cindex, int ntindex) {
         return dest.addInterfaceMethodrefInfo(cindex, ntindex);
     }
 }
@@ -1619,24 +1655,30 @@ class StringInfo extends ConstInfo {
         string = in.readUnsignedShort();
     }
 
-    public int hashCode() { return string; }
+    @Override
+	public int hashCode() { return string; }
 
-    public boolean equals(Object obj) {
+    @Override
+	public boolean equals(Object obj) {
         return obj instanceof StringInfo && ((StringInfo)obj).string == string;
     }
 
-    public int getTag() { return tag; }
+    @Override
+	public int getTag() { return tag; }
 
-    public int copy(ConstPool src, ConstPool dest, Map map) {
+    @Override
+	public int copy(ConstPool src, ConstPool dest, Map map) {
         return dest.addStringInfo(src.getUtf8Info(string));
     }
 
-    public void write(DataOutputStream out) throws IOException {
+    @Override
+	public void write(DataOutputStream out) throws IOException {
         out.writeByte(tag);
         out.writeShort(string);
     }
 
-    public void print(PrintWriter out) {
+    @Override
+	public void print(PrintWriter out) {
         out.print("String #");
         out.println(string);
     }
@@ -1656,24 +1698,30 @@ class IntegerInfo extends ConstInfo {
         value = in.readInt();
     }
 
-    public int hashCode() { return value; }
+    @Override
+	public int hashCode() { return value; }
 
-    public boolean equals(Object obj) {
+    @Override
+	public boolean equals(Object obj) {
         return obj instanceof IntegerInfo && ((IntegerInfo)obj).value == value;
     }
 
-    public int getTag() { return tag; }
+    @Override
+	public int getTag() { return tag; }
 
-    public int copy(ConstPool src, ConstPool dest, Map map) {
+    @Override
+	public int copy(ConstPool src, ConstPool dest, Map map) {
         return dest.addIntegerInfo(value);
     }
 
-    public void write(DataOutputStream out) throws IOException {
+    @Override
+	public void write(DataOutputStream out) throws IOException {
         out.writeByte(tag);
         out.writeInt(value);
     }
 
-    public void print(PrintWriter out) {
+    @Override
+	public void print(PrintWriter out) {
         out.print("Integer ");
         out.println(value);
     }
@@ -1693,24 +1741,30 @@ class FloatInfo extends ConstInfo {
         value = in.readFloat();
     }
 
-    public int hashCode() { return Float.floatToIntBits(value); }
+    @Override
+	public int hashCode() { return Float.floatToIntBits(value); }
 
-    public boolean equals(Object obj) {
+    @Override
+	public boolean equals(Object obj) {
         return obj instanceof FloatInfo && ((FloatInfo)obj).value == value;
     }
 
-    public int getTag() { return tag; }
+    @Override
+	public int getTag() { return tag; }
 
-    public int copy(ConstPool src, ConstPool dest, Map map) {
+    @Override
+	public int copy(ConstPool src, ConstPool dest, Map map) {
         return dest.addFloatInfo(value);
     }
 
-    public void write(DataOutputStream out) throws IOException {
+    @Override
+	public void write(DataOutputStream out) throws IOException {
         out.writeByte(tag);
         out.writeFloat(value);
     }
 
-    public void print(PrintWriter out) {
+    @Override
+	public void print(PrintWriter out) {
         out.print("Float ");
         out.println(value);
     }
@@ -1730,24 +1784,30 @@ class LongInfo extends ConstInfo {
         value = in.readLong();
     }
 
-    public int hashCode() { return (int)(value ^ (value >>> 32)); }
+    @Override
+	public int hashCode() { return (int)(value ^ (value >>> 32)); }
 
-    public boolean equals(Object obj) {
+    @Override
+	public boolean equals(Object obj) {
         return obj instanceof LongInfo && ((LongInfo)obj).value == value;
     }
 
-    public int getTag() { return tag; }
+    @Override
+	public int getTag() { return tag; }
 
-    public int copy(ConstPool src, ConstPool dest, Map map) {
+    @Override
+	public int copy(ConstPool src, ConstPool dest, Map map) {
         return dest.addLongInfo(value);
     }
 
-    public void write(DataOutputStream out) throws IOException {
+    @Override
+	public void write(DataOutputStream out) throws IOException {
         out.writeByte(tag);
         out.writeLong(value);
     }
 
-    public void print(PrintWriter out) {
+    @Override
+	public void print(PrintWriter out) {
         out.print("Long ");
         out.println(value);
     }
@@ -1767,27 +1827,33 @@ class DoubleInfo extends ConstInfo {
         value = in.readDouble();
     }
 
-    public int hashCode() {
+    @Override
+	public int hashCode() {
         long v = Double.doubleToLongBits(value);
         return (int)(v ^ (v >>> 32));
     }
 
-    public boolean equals(Object obj) {
+    @Override
+	public boolean equals(Object obj) {
         return obj instanceof DoubleInfo && ((DoubleInfo)obj).value == value;
     }
 
-    public int getTag() { return tag; }
+    @Override
+	public int getTag() { return tag; }
 
-    public int copy(ConstPool src, ConstPool dest, Map map) {
+    @Override
+	public int copy(ConstPool src, ConstPool dest, Map map) {
         return dest.addDoubleInfo(value);
     }
 
-    public void write(DataOutputStream out) throws IOException {
+    @Override
+	public void write(DataOutputStream out) throws IOException {
         out.writeByte(tag);
         out.writeDouble(value);
     }
 
-    public void print(PrintWriter out) {
+    @Override
+	public void print(PrintWriter out) {
         out.print("Double ");
         out.println(value);
     }
@@ -1807,26 +1873,32 @@ class Utf8Info extends ConstInfo {
         string = in.readUTF();
     }
 
-    public int hashCode() {
+    @Override
+	public int hashCode() {
         return string.hashCode();
     }
 
-    public boolean equals(Object obj) {
+    @Override
+	public boolean equals(Object obj) {
         return obj instanceof Utf8Info && ((Utf8Info)obj).string.equals(string);
     }
 
-    public int getTag() { return tag; }
+    @Override
+	public int getTag() { return tag; }
 
-    public int copy(ConstPool src, ConstPool dest, Map map) {
+    @Override
+	public int copy(ConstPool src, ConstPool dest, Map map) {
         return dest.addUtf8Info(string);
     }
 
-    public void write(DataOutputStream out) throws IOException {
+    @Override
+	public void write(DataOutputStream out) throws IOException {
         out.writeByte(tag);
         out.writeUTF(string);
     }
 
-    public void print(PrintWriter out) {
+    @Override
+	public void print(PrintWriter out) {
         out.print("UTF8 \"");
         out.print(string);
         out.println("\"");
@@ -1849,9 +1921,11 @@ class MethodHandleInfo extends ConstInfo {
         refIndex = in.readUnsignedShort();
     }
 
-    public int hashCode() { return (refKind << 16) ^ refIndex; }
+    @Override
+	public int hashCode() { return (refKind << 16) ^ refIndex; }
 
-    public boolean equals(Object obj) {
+    @Override
+	public boolean equals(Object obj) {
         if (obj instanceof MethodHandleInfo) {
             MethodHandleInfo mh = (MethodHandleInfo)obj;
             return mh.refKind == refKind && mh.refIndex == refIndex; 
@@ -1860,20 +1934,24 @@ class MethodHandleInfo extends ConstInfo {
             return false;
     }
 
-    public int getTag() { return tag; }
+    @Override
+	public int getTag() { return tag; }
 
-    public int copy(ConstPool src, ConstPool dest, Map map) {
+    @Override
+	public int copy(ConstPool src, ConstPool dest, Map map) {
        return dest.addMethodHandleInfo(refKind,
                            src.getItem(refIndex).copy(src, dest, map));
     }
 
-    public void write(DataOutputStream out) throws IOException {
+    @Override
+	public void write(DataOutputStream out) throws IOException {
         out.writeByte(tag);
         out.writeByte(refKind);
         out.writeShort(refIndex);
     }
 
-    public void print(PrintWriter out) {
+    @Override
+	public void print(PrintWriter out) {
         out.print("MethodHandle #");
         out.print(refKind);
         out.print(", index #");
@@ -1895,18 +1973,22 @@ class MethodTypeInfo extends ConstInfo {
         descriptor = in.readUnsignedShort();
     }
 
-    public int hashCode() { return descriptor; }
+    @Override
+	public int hashCode() { return descriptor; }
 
-    public boolean equals(Object obj) {
+    @Override
+	public boolean equals(Object obj) {
         if (obj instanceof MethodTypeInfo)
             return ((MethodTypeInfo)obj).descriptor == descriptor;
         else
             return false;
     }
 
-    public int getTag() { return tag; }
+    @Override
+	public int getTag() { return tag; }
 
-    public void renameClass(ConstPool cp, String oldName, String newName, HashMap cache) {
+    @Override
+	public void renameClass(ConstPool cp, String oldName, String newName, HashMap cache) {
         String desc = cp.getUtf8Info(descriptor);
         String desc2 = Descriptor.rename(desc, oldName, newName);
         if (desc != desc2)
@@ -1919,7 +2001,8 @@ class MethodTypeInfo extends ConstInfo {
             }
     }
 
-    public void renameClass(ConstPool cp, Map map, HashMap cache) {
+    @Override
+	public void renameClass(ConstPool cp, Map map, HashMap cache) {
         String desc = cp.getUtf8Info(descriptor);
         String desc2 = Descriptor.rename(desc, map);
         if (desc != desc2)
@@ -1932,18 +2015,21 @@ class MethodTypeInfo extends ConstInfo {
             }
     }
 
-    public int copy(ConstPool src, ConstPool dest, Map map) {
+    @Override
+	public int copy(ConstPool src, ConstPool dest, Map map) {
         String desc = src.getUtf8Info(descriptor);
         desc = Descriptor.rename(desc, map);
         return dest.addMethodTypeInfo(dest.addUtf8Info(desc));
     }
 
-    public void write(DataOutputStream out) throws IOException {
+    @Override
+	public void write(DataOutputStream out) throws IOException {
         out.writeByte(tag);
         out.writeShort(descriptor);
     }
 
-    public void print(PrintWriter out) {
+    @Override
+	public void print(PrintWriter out) {
         out.print("MethodType #");
         out.println(descriptor);
     }
@@ -1965,9 +2051,11 @@ class InvokeDynamicInfo extends ConstInfo {
         nameAndType = in.readUnsignedShort();
     }
 
-    public int hashCode() { return (bootstrap << 16) ^ nameAndType; }
+    @Override
+	public int hashCode() { return (bootstrap << 16) ^ nameAndType; }
 
-    public boolean equals(Object obj) {
+    @Override
+	public boolean equals(Object obj) {
         if (obj instanceof InvokeDynamicInfo) {
             InvokeDynamicInfo iv = (InvokeDynamicInfo)obj;
             return iv.bootstrap == bootstrap && iv.nameAndType == nameAndType;
@@ -1976,20 +2064,24 @@ class InvokeDynamicInfo extends ConstInfo {
             return false;
     }
 
-    public int getTag() { return tag; }
+    @Override
+	public int getTag() { return tag; }
 
-    public int copy(ConstPool src, ConstPool dest, Map map) {
+    @Override
+	public int copy(ConstPool src, ConstPool dest, Map map) {
        return dest.addInvokeDynamicInfo(bootstrap,
                            src.getItem(nameAndType).copy(src, dest, map));
     }
 
-    public void write(DataOutputStream out) throws IOException {
+    @Override
+	public void write(DataOutputStream out) throws IOException {
         out.writeByte(tag);
         out.writeShort(bootstrap);
         out.writeShort(nameAndType);
     }
 
-    public void print(PrintWriter out) {
+    @Override
+	public void print(PrintWriter out) {
         out.print("InvokeDynamic #");
         out.print(bootstrap);
         out.print(", name&type #");

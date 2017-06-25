@@ -348,7 +348,7 @@ public abstract class Tracer implements TypeTag {
             stackTop -= (op == Opcode.LASTORE || op == Opcode.DASTORE) ? 4 : 3;
             break;
         case Opcode.AASTORE :
-            TypeData.ArrayElement.aastore(stackTypes[stackTop - 3],
+            TypeData.aastore(stackTypes[stackTop - 3],
                                           stackTypes[stackTop - 1],
                                           classPool);
             stackTop -= 3;

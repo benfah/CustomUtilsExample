@@ -126,7 +126,8 @@ public class AnnotationImpl implements InvocationHandler {
      * <code>AnnotationImpl</code>.  The <code>annotationType()</code> method
      * is also available on the proxy instance.
      */
-    public Object invoke(Object proxy, Method method, Object[] args)
+    @Override
+	public Object invoke(Object proxy, Method method, Object[] args)
         throws Throwable
     {
         String name = method.getName();
@@ -183,7 +184,8 @@ public class AnnotationImpl implements InvocationHandler {
     /**
      * Returns a hash code value for this object.
      */
-    public int hashCode() {
+    @Override
+	public int hashCode() {
         if (cachedHashCode == Integer.MIN_VALUE) {
             int hashCode = 0;
 

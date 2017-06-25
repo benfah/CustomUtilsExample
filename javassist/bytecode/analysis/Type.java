@@ -567,7 +567,8 @@ public class Type {
         return map;
     }
 
-    public boolean equals(Object o) {
+    @Override
+	public boolean equals(Object o) {
         if (! (o instanceof Type))
             return false;
 
@@ -578,7 +579,8 @@ public class Type {
         return one == two || (one != null && two != null && one.getName().equals(two.getName()));
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         if (this == BOGUS)
             return "BOGUS";
         if (this == UNINIT)

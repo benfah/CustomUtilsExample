@@ -81,7 +81,8 @@ public abstract class CtBehavior extends CtMember {
         }
     }
 
-    protected void extendToString(StringBuffer buffer) {
+    @Override
+	protected void extendToString(StringBuffer buffer) {
         buffer.append(' ');
         buffer.append(getName());
         buffer.append(' ');
@@ -140,7 +141,8 @@ public abstract class CtBehavior extends CtMember {
      *                  <code>javassist.Modifier</code>.
      * @see Modifier
      */
-    public int getModifiers() {
+    @Override
+	public int getModifiers() {
         return AccessFlag.toModifier(methodInfo.getAccessFlags());
     }
 
@@ -153,7 +155,8 @@ public abstract class CtBehavior extends CtMember {
      *
      * @see Modifier
      */
-    public void setModifiers(int mod) {
+    @Override
+	public void setModifiers(int mod) {
         declaringClass.checkModify();
         methodInfo.setAccessFlags(AccessFlag.of(mod));
     }
@@ -166,7 +169,8 @@ public abstract class CtBehavior extends CtMember {
      *         otherwise <code>false</code>.
      * @since 3.21
      */
-    public boolean hasAnnotation(String typeName) {
+    @Override
+	public boolean hasAnnotation(String typeName) {
        MethodInfo mi = getMethodInfo2();
        AnnotationsAttribute ainfo = (AnnotationsAttribute)
                    mi.getAttribute(AnnotationsAttribute.invisibleTag);  
@@ -188,7 +192,8 @@ public abstract class CtBehavior extends CtMember {
      * @return the annotation if found, otherwise <code>null</code>.
      * @since 3.11
      */
-    public Object getAnnotation(Class clz) throws ClassNotFoundException {
+    @Override
+	public Object getAnnotation(Class clz) throws ClassNotFoundException {
        MethodInfo mi = getMethodInfo2();
        AnnotationsAttribute ainfo = (AnnotationsAttribute)
                    mi.getAttribute(AnnotationsAttribute.invisibleTag);  
@@ -206,7 +211,8 @@ public abstract class CtBehavior extends CtMember {
      * @see #getAvailableAnnotations()
      * @since 3.1
      */
-    public Object[] getAnnotations() throws ClassNotFoundException {
+    @Override
+	public Object[] getAnnotations() throws ClassNotFoundException {
        return getAnnotations(false);
    }
 
@@ -219,7 +225,8 @@ public abstract class CtBehavior extends CtMember {
      * @see #getAnnotations()
      * @since 3.3
      */
-    public Object[] getAvailableAnnotations(){
+    @Override
+	public Object[] getAvailableAnnotations(){
        try{
            return getAnnotations(true);
        }
@@ -324,7 +331,8 @@ public abstract class CtBehavior extends CtMember {
      * @see javassist.bytecode.Descriptor
      * @see #getGenericSignature()
      */
-    public String getSignature() {
+    @Override
+	public String getSignature() {
         return methodInfo.getDescriptor();
     }
 
@@ -335,7 +343,8 @@ public abstract class CtBehavior extends CtMember {
      * @see SignatureAttribute#toMethodSignature(String)
      * @since 3.17
      */
-    public String getGenericSignature() {
+    @Override
+	public String getGenericSignature() {
         SignatureAttribute sa
             = (SignatureAttribute)methodInfo.getAttribute(SignatureAttribute.tag);
         return sa == null ? null : sa.getSignature();
@@ -351,7 +360,8 @@ public abstract class CtBehavior extends CtMember {
      * @see javassist.bytecode.SignatureAttribute.MethodSignature#encode()
      * @since 3.17
      */
-    public void setGenericSignature(String sig) {
+    @Override
+	public void setGenericSignature(String sig) {
         declaringClass.checkModify();
         methodInfo.addAttribute(new SignatureAttribute(methodInfo.getConstPool(), sig));
     }
@@ -489,7 +499,8 @@ public abstract class CtBehavior extends CtMember {
      *
      * @param name              attribute name
      */
-    public byte[] getAttribute(String name) {
+    @Override
+	public byte[] getAttribute(String name) {
         AttributeInfo ai = methodInfo.getAttribute(name);
         if (ai == null)
             return null;
@@ -507,7 +518,8 @@ public abstract class CtBehavior extends CtMember {
      * @param name      attribute name
      * @param data      attribute value
      */
-    public void setAttribute(String name, byte[] data) {
+    @Override
+	public void setAttribute(String name, byte[] data) {
         declaringClass.checkModify();
         methodInfo.addAttribute(new AttributeInfo(methodInfo.getConstPool(),
                                                   name, data));

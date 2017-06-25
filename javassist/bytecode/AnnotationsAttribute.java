@@ -160,7 +160,8 @@ public class AnnotationsAttribute extends AttributeInfo {
     /**
      * Copies this attribute and returns a new copy.
      */
-    public AttributeInfo copy(ConstPool newCp, Map classnames) {
+    @Override
+	public AttributeInfo copy(ConstPool newCp, Map classnames) {
         Copier copier = new Copier(info, constPool, newCp, classnames);
         try {
             copier.annotationArray();
@@ -297,13 +298,15 @@ public class AnnotationsAttribute extends AttributeInfo {
      * @param oldname       a JVM class name.
      * @param newname       a JVM class name.
      */
-    void renameClass(String oldname, String newname) {
+    @Override
+	void renameClass(String oldname, String newname) {
         HashMap map = new HashMap();
         map.put(oldname, newname);
         renameClass(map);
     }
 
-    void renameClass(Map classnames) {
+    @Override
+	void renameClass(Map classnames) {
         Renamer renamer = new Renamer(info, getConstPool(), classnames);
         try {
             renamer.annotationArray();
@@ -312,12 +315,14 @@ public class AnnotationsAttribute extends AttributeInfo {
         }
     }
 
-    void getRefClasses(Map classnames) { renameClass(classnames); }
+    @Override
+	void getRefClasses(Map classnames) { renameClass(classnames); }
 
     /**
      * Returns a string representation of this object.
      */
-    public String toString() {
+    @Override
+	public String toString() {
         Annotation[] a = getAnnotations();
         StringBuilder sbuf = new StringBuilder();
         int i = 0;
@@ -475,19 +480,22 @@ public class AnnotationsAttribute extends AttributeInfo {
             classnames = map;
         }
 
-        int annotation(int pos, int type, int numPairs) throws Exception {
+        @Override
+		int annotation(int pos, int type, int numPairs) throws Exception {
             renameType(pos - 4, type);
             return super.annotation(pos, type, numPairs);
         }
 
-        void enumMemberValue(int pos, int typeNameIndex, int constNameIndex)
+        @Override
+		void enumMemberValue(int pos, int typeNameIndex, int constNameIndex)
             throws Exception
         {
             renameType(pos + 1, typeNameIndex);
             super.enumMemberValue(pos, typeNameIndex, constNameIndex);
         }
 
-        void classMemberValue(int pos, int index) throws Exception {
+        @Override
+		void classMemberValue(int pos, int index) throws Exception {
             renameType(pos + 1, index);
             super.classMemberValue(pos, index);
         }
@@ -539,49 +547,58 @@ public class AnnotationsAttribute extends AttributeInfo {
             return output.toByteArray();
         }
 
-        void parameters(int numParam, int pos) throws Exception {
+        @Override
+		void parameters(int numParam, int pos) throws Exception {
             writer.numParameters(numParam);
             super.parameters(numParam, pos);
         }
 
-        int annotationArray(int pos, int num) throws Exception {
+        @Override
+		int annotationArray(int pos, int num) throws Exception {
             writer.numAnnotations(num);
             return super.annotationArray(pos, num);
         }
 
-        int annotation(int pos, int type, int numPairs) throws Exception {
+        @Override
+		int annotation(int pos, int type, int numPairs) throws Exception {
             writer.annotation(copyType(type), numPairs);
             return super.annotation(pos, type, numPairs);
         }
 
-        int memberValuePair(int pos, int nameIndex) throws Exception {
+        @Override
+		int memberValuePair(int pos, int nameIndex) throws Exception {
             writer.memberValuePair(copy(nameIndex));
             return super.memberValuePair(pos, nameIndex);
         }
 
-        void constValueMember(int tag, int index) throws Exception {
+        @Override
+		void constValueMember(int tag, int index) throws Exception {
             writer.constValueIndex(tag, copy(index));
             super.constValueMember(tag, index);
         }
 
-        void enumMemberValue(int pos, int typeNameIndex, int constNameIndex)
+        @Override
+		void enumMemberValue(int pos, int typeNameIndex, int constNameIndex)
             throws Exception
         {
             writer.enumConstValue(copyType(typeNameIndex), copy(constNameIndex));
             super.enumMemberValue(pos, typeNameIndex, constNameIndex);
         }
 
-        void classMemberValue(int pos, int index) throws Exception {
+        @Override
+		void classMemberValue(int pos, int index) throws Exception {
             writer.classInfoIndex(copyType(index));
             super.classMemberValue(pos, index);
         }
 
-        int annotationMemberValue(int pos) throws Exception {
+        @Override
+		int annotationMemberValue(int pos) throws Exception {
             writer.annotationValue();
             return super.annotationMemberValue(pos);
         }
 
-        int arrayMemberValue(int pos, int num) throws Exception {
+        @Override
+		int arrayMemberValue(int pos, int num) throws Exception {
             writer.arrayValue(num);
             return super.arrayMemberValue(pos, num);
         }
@@ -650,7 +667,8 @@ public class AnnotationsAttribute extends AttributeInfo {
             return currentMember;
         }
 
-        void parameters(int numParam, int pos) throws Exception {
+        @Override
+		void parameters(int numParam, int pos) throws Exception {
             Annotation[][] params = new Annotation[numParam][];
             for (int i = 0; i < numParam; ++i) {
                 pos = annotationArray(pos);
@@ -660,7 +678,8 @@ public class AnnotationsAttribute extends AttributeInfo {
             allParams = params;
         }
 
-        int annotationArray(int pos, int num) throws Exception {
+        @Override
+		int annotationArray(int pos, int num) throws Exception {
             Annotation[] array = new Annotation[num];
             for (int i = 0; i < num; ++i) {
                 pos = annotation(pos);
@@ -671,18 +690,21 @@ public class AnnotationsAttribute extends AttributeInfo {
             return pos;
         }
 
-        int annotation(int pos, int type, int numPairs) throws Exception {
+        @Override
+		int annotation(int pos, int type, int numPairs) throws Exception {
             currentAnno = new Annotation(type, pool);
             return super.annotation(pos, type, numPairs);
         }
 
-        int memberValuePair(int pos, int nameIndex) throws Exception {
+        @Override
+		int memberValuePair(int pos, int nameIndex) throws Exception {
             pos = super.memberValuePair(pos, nameIndex);
             currentAnno.addMemberValue(nameIndex, currentMember);
             return pos;
         }
 
-        void constValueMember(int tag, int index) throws Exception {
+        @Override
+		void constValueMember(int tag, int index) throws Exception {
             MemberValue m;
             ConstPool cp = pool;
             switch (tag) {
@@ -721,7 +743,8 @@ public class AnnotationsAttribute extends AttributeInfo {
             super.constValueMember(tag, index);
         }
 
-        void enumMemberValue(int pos, int typeNameIndex, int constNameIndex)
+        @Override
+		void enumMemberValue(int pos, int typeNameIndex, int constNameIndex)
             throws Exception
         {
             currentMember = new EnumMemberValue(typeNameIndex,
@@ -729,12 +752,14 @@ public class AnnotationsAttribute extends AttributeInfo {
             super.enumMemberValue(pos, typeNameIndex, constNameIndex);
         }
 
-        void classMemberValue(int pos, int index) throws Exception {
+        @Override
+		void classMemberValue(int pos, int index) throws Exception {
             currentMember = new ClassMemberValue(index, pool);
             super.classMemberValue(pos, index);
         }
 
-        int annotationMemberValue(int pos) throws Exception {
+        @Override
+		int annotationMemberValue(int pos) throws Exception {
             Annotation anno = currentAnno;
             pos = super.annotationMemberValue(pos);
             currentMember = new AnnotationMemberValue(currentAnno, pool);
@@ -742,7 +767,8 @@ public class AnnotationsAttribute extends AttributeInfo {
             return pos;
         }
 
-        int arrayMemberValue(int pos, int num) throws Exception {
+        @Override
+		int arrayMemberValue(int pos, int num) throws Exception {
             ArrayMemberValue amv = new ArrayMemberValue(pool);
             MemberValue[] elements = new MemberValue[num];
             for (int i = 0; i < num; ++i) {

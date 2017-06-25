@@ -32,7 +32,8 @@ final public class TransformNewClass extends Transformer {
         this.newClassName = newClassName;
     }
 
-    public void initialize(ConstPool cp, CodeAttribute attr) {
+    @Override
+	public void initialize(ConstPool cp, CodeAttribute attr) {
         nested = 0;
         newClassIndex = newMethodNTIndex = newMethodIndex = 0;
     }
@@ -44,7 +45,8 @@ final public class TransformNewClass extends Transformer {
      *    ...
      *    INVOKESPECIAL classname:method
      */
-    public int transform(CtClass clazz, int pos, CodeIterator iterator,
+    @Override
+	public int transform(CtClass clazz, int pos, CodeIterator iterator,
                          ConstPool cp) throws CannotCompileException
     {
         int index;

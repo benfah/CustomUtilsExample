@@ -52,7 +52,8 @@ public class SoftValueHashMap extends AbstractMap implements Map {
     /**
      * Returns a set of the mappings contained in this hash table.
      */
-    public Set entrySet() {
+    @Override
+	public Set entrySet() {
         processQueue();
         return hash.entrySet();
     }
@@ -142,7 +143,8 @@ public class SoftValueHashMap extends AbstractMap implements Map {
      * <code>Map</code> interface, the time required by this operation is
      * linear in the size of the map.</em>
      */
-    public int size() {
+    @Override
+	public int size() {
         processQueue();
         return hash.size();
     }
@@ -150,7 +152,8 @@ public class SoftValueHashMap extends AbstractMap implements Map {
     /**
      * Returns <code>true</code> if this map contains no key-value mappings.
      */
-    public boolean isEmpty() {
+    @Override
+	public boolean isEmpty() {
         processQueue();
         return hash.isEmpty();
     }
@@ -162,7 +165,8 @@ public class SoftValueHashMap extends AbstractMap implements Map {
      * @param key
      *            The key whose presence in this map is to be tested.
      */
-    public boolean containsKey(Object key) {
+    @Override
+	public boolean containsKey(Object key) {
         processQueue();
         return hash.containsKey(key);
     }
@@ -177,7 +181,8 @@ public class SoftValueHashMap extends AbstractMap implements Map {
      * @param key
      *            The key whose associated value, if any, is to be returned.
      */
-    public Object get(Object key) {
+    @Override
+	public Object get(Object key) {
         processQueue();
         SoftReference ref = (SoftReference)hash.get(key);
         if (ref != null)
@@ -200,7 +205,8 @@ public class SoftValueHashMap extends AbstractMap implements Map {
      * @return The previous value to which this key was mapped, or
      *         <code>null</code> if if there was no mapping for the key
      */
-    public Object put(Object key, Object value) {
+    @Override
+	public Object put(Object key, Object value) {
         processQueue();
         Object rtn = hash.put(key, SoftValueRef.create(key, value, queue));
         if (rtn != null)
@@ -218,7 +224,8 @@ public class SoftValueHashMap extends AbstractMap implements Map {
      * @return The value to which this key was mapped, or <code>null</code> if
      *         there was no mapping for the key.
      */
-    public Object remove(Object key) {
+    @Override
+	public Object remove(Object key) {
         processQueue();
         return hash.remove(key);
     }
@@ -226,7 +233,8 @@ public class SoftValueHashMap extends AbstractMap implements Map {
     /**
      * Removes all mappings from this map.
      */
-    public void clear() {
+    @Override
+	public void clear() {
         processQueue();
         hash.clear();
     }

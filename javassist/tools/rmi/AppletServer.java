@@ -90,7 +90,8 @@ public class AppletServer extends Webserver {
     /**
      * Begins the HTTP service.
      */
-    public void run() {
+    @Override
+	public void run() {
         super.run();
     }
 
@@ -131,7 +132,8 @@ public class AppletServer extends Webserver {
     /**
      * Processes a request from a web browser (an ObjectImporter).
      */
-    public void doReply(InputStream in, OutputStream out, String cmd)
+    @Override
+	public void doReply(InputStream in, OutputStream out, String cmd)
         throws IOException, BadHttpRequest
     {
         if (cmd.startsWith("POST /rmi "))

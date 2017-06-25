@@ -3,7 +3,6 @@ package com.example;
 import net.minecraft.server.v1_12_R1.EntityBat;
 import net.minecraft.server.v1_12_R1.EntityItem;
 import net.minecraft.server.v1_12_R1.Item;
-import net.minecraft.server.v1_12_R1.ItemStack;
 import net.minecraft.server.v1_12_R1.Items;
 import net.minecraft.server.v1_12_R1.World;
 

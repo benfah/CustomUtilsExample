@@ -50,7 +50,9 @@ public class CastExpr extends ASTList implements TokenId {
 
     public void setOprand(ASTree t) { getRight().setLeft(t); }
 
-    public String getTag() { return "cast:" + castType + ":" + arrayDim; }
+    @Override
+	public String getTag() { return "cast:" + castType + ":" + arrayDim; }
 
-    public void accept(Visitor v) throws CompileError { v.atCastExpr(this); }
+    @Override
+	public void accept(Visitor v) throws CompileError { v.atCastExpr(this); }
 }

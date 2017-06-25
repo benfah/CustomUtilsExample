@@ -104,7 +104,8 @@ public class ParameterAnnotationsAttribute extends AttributeInfo {
     /**
      * Copies this attribute and returns a new copy.
      */
-    public AttributeInfo copy(ConstPool newCp, Map classnames) {
+    @Override
+	public AttributeInfo copy(ConstPool newCp, Map classnames) {
         Copier copier = new Copier(info, constPool, newCp, classnames);
         try {
             copier.parameters();
@@ -172,13 +173,15 @@ public class ParameterAnnotationsAttribute extends AttributeInfo {
      * @param oldname       a JVM class name.
      * @param newname       a JVM class name.
      */
-    void renameClass(String oldname, String newname) {
+    @Override
+	void renameClass(String oldname, String newname) {
         HashMap map = new HashMap();
         map.put(oldname, newname);
         renameClass(map);
     }
 
-    void renameClass(Map classnames) {
+    @Override
+	void renameClass(Map classnames) {
         Renamer renamer = new Renamer(info, getConstPool(), classnames);
         try {
             renamer.parameters();
@@ -187,12 +190,14 @@ public class ParameterAnnotationsAttribute extends AttributeInfo {
         }
     }
 
-    void getRefClasses(Map classnames) { renameClass(classnames); }
+    @Override
+	void getRefClasses(Map classnames) { renameClass(classnames); }
 
     /**
      * Returns a string representation of this object.
      */
-    public String toString() {
+    @Override
+	public String toString() {
         Annotation[][] aa = getAnnotations();
         StringBuilder sbuf = new StringBuilder();
         int k = 0;

@@ -51,7 +51,8 @@ public class TransformCall extends Transformer {
         newMethodIsPrivate = Modifier.isPrivate(substMethod.getModifiers());
     }
 
-    public void initialize(ConstPool cp, CodeAttribute attr) {
+    @Override
+	public void initialize(ConstPool cp, CodeAttribute attr) {
         if (constPool != cp)
             newIndex = 0;
     }
@@ -63,7 +64,8 @@ public class TransformCall extends Transformer {
      * by <code>classname</code>.   This method transforms the instruction
      * in that case unless the subclass overrides the target method.
      */
-    public int transform(CtClass clazz, int pos, CodeIterator iterator,
+    @Override
+	public int transform(CtClass clazz, int pos, CodeIterator iterator,
                          ConstPool cp) throws BadBytecode
     {
         int c = iterator.byteAt(pos);

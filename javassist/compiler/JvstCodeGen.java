@@ -78,7 +78,8 @@ public class JvstCodeGen extends MemberCodeGen {
     /* To support $args, $sig, and $type.
      * $args is an array of parameter list.
      */
-    public void atMember(Member mem) throws CompileError {
+    @Override
+	public void atMember(Member mem) throws CompileError {
         String name = mem.get();
         if (name.equals(paramArrayName)) {
             compileParameterList(bytecode, paramTypeList, indexOfParam1());
@@ -120,7 +121,8 @@ public class JvstCodeGen extends MemberCodeGen {
         className = "java/lang/Class";
     }
 
-    protected void atFieldAssign(Expr expr, int op, ASTree left,
+    @Override
+	protected void atFieldAssign(Expr expr, int op, ASTree left,
                         ASTree right, boolean doDup) throws CompileError
     {
         if (left instanceof Member
@@ -158,7 +160,8 @@ public class JvstCodeGen extends MemberCodeGen {
         }
     }
 
-    public void atCastExpr(CastExpr expr) throws CompileError {
+    @Override
+	public void atCastExpr(CastExpr expr) throws CompileError {
         ASTList classname = expr.getClassName();
         if (classname != null && expr.getArrayDim() == 0) {
             ASTree p = classname.head();
@@ -227,7 +230,8 @@ public class JvstCodeGen extends MemberCodeGen {
     /* Delegates to a ProcHandler object if the method call is
      * $proceed().  It may process $cflow().
      */
-    public void atCallExpr(CallExpr expr) throws CompileError {
+    @Override
+	public void atCallExpr(CallExpr expr) throws CompileError {
         ASTree method = expr.oprand1();
         if (method instanceof Member) {
             String name = ((Member)method).get();
@@ -314,7 +318,8 @@ public class JvstCodeGen extends MemberCodeGen {
     }
     */
 
-    public int getMethodArgsLength(ASTList args) {
+    @Override
+	public int getMethodArgsLength(ASTList args) {
         String pname = paramListName;
         int n = 0;
         while (args != null) {
@@ -332,7 +337,8 @@ public class JvstCodeGen extends MemberCodeGen {
         return n;
     }
 
-    public void atMethodArgs(ASTList args, int[] types, int[] dims,
+    @Override
+	public void atMethodArgs(ASTList args, int[] types, int[] dims,
                                 String[] cnames) throws CompileError {
         CtClass[] params = paramTypeList;
         String pname = paramListName;
@@ -409,7 +415,8 @@ public class JvstCodeGen extends MemberCodeGen {
     /*
      * Makes it valid to write "return <expr>;" for a void method.
      */
-    protected void atReturnStmnt(Stmnt st) throws CompileError {
+    @Override
+	protected void atReturnStmnt(Stmnt st) throws CompileError {
         ASTree result = st.getLeft();
         if (result != null && returnType == CtClass.voidType) {
             compileExpr(result);
@@ -614,13 +621,13 @@ public class JvstCodeGen extends MemberCodeGen {
             code.addIconst(n);                          // iconst_<n>
             code.addAnewarray(javaLangObject);          // anewarray Object
             for (int i = 0; i < n; ++i) {
-                code.addOpcode(Bytecode.DUP);           // dup
+                code.addOpcode(Opcode.DUP);           // dup
                 code.addIconst(i);                      // iconst_<i>
                 if (params[i].isPrimitive()) {
                     CtPrimitiveType pt = (CtPrimitiveType)params[i];
                     String wrapper = pt.getWrapperName();
                     code.addNew(wrapper);               // new <wrapper>
-                    code.addOpcode(Bytecode.DUP);       // dup
+                    code.addOpcode(Opcode.DUP);       // dup
                     int s = code.addLoad(regno, pt);    // ?load <regno>
                     regno += s;
                     args[0] = pt;
@@ -633,7 +640,7 @@ public class JvstCodeGen extends MemberCodeGen {
                     ++regno;
                 }
 
-                code.addOpcode(Bytecode.AASTORE);       // aastore
+                code.addOpcode(Opcode.AASTORE);       // aastore
             }
 
             return 8;

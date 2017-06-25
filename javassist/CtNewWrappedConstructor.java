@@ -88,7 +88,7 @@ class CtNewWrappedConstructor extends CtNewWrappedMethod {
         }
 
         if (wrappedBody == null)
-            code.add(Bytecode.RETURN);
+            code.add(Opcode.RETURN);
         else {
             stacksize2 = makeBody0(declaring, classfile, wrappedBody,
                                    false, parameters, CtClass.voidType,

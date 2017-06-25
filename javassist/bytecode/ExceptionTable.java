@@ -73,7 +73,8 @@ public class ExceptionTable implements Cloneable {
      * The constant pool object is shared between this object
      * and the cloned object.
      */
-    public Object clone() throws CloneNotSupportedException {
+    @Override
+	public Object clone() throws CloneNotSupportedException {
         ExceptionTable r = (ExceptionTable)super.clone();
         r.entries = new ArrayList(entries);
         return r;

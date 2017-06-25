@@ -66,7 +66,8 @@ public class TransformReadField extends Transformer {
         return false;
     }
 
-    public int transform(CtClass tclazz, int pos, CodeIterator iterator,
+    @Override
+	public int transform(CtClass tclazz, int pos, CodeIterator iterator,
                          ConstPool cp) throws BadBytecode
     {
         int c = iterator.byteAt(pos);

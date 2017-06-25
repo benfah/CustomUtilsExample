@@ -212,7 +212,8 @@ public class Annotation {
     /**
      * Returns a string representation of the annotation.
      */
-    public String toString() {
+    @Override
+	public String toString() {
         StringBuffer buf = new StringBuffer("@");
         buf.append(getTypeName());
         if (members != null) {
@@ -331,7 +332,8 @@ public class Annotation {
      * Returns true if the given object represents the same annotation
      * as this object.  The equality test checks the member values.
      */
-    public boolean equals(Object obj) {
+    @Override
+	public boolean equals(Object obj) {
         if (obj == this)
             return true;
         if (obj == null || obj instanceof Annotation == false)

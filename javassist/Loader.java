@@ -297,7 +297,8 @@ public class Loader extends ClassLoader {
     /**
      * Requests the class loader to load a class.
      */
-    protected Class loadClass(String name, boolean resolve)
+    @Override
+	protected Class loadClass(String name, boolean resolve)
         throws ClassFormatError, ClassNotFoundException {
         name = name.intern();
         synchronized (name) {
@@ -330,7 +331,8 @@ public class Loader extends ClassLoader {
      * @throws ClassNotFoundException   if an exception is thrown while
      *                                  obtaining a class file.
      */
-    protected Class findClass(String name) throws ClassNotFoundException {
+    @Override
+	protected Class findClass(String name) throws ClassNotFoundException {
         byte[] classfile;
         try {
             if (source != null) {

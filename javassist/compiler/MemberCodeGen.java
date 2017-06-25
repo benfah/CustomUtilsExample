@@ -64,19 +64,22 @@ public class MemberCodeGen extends CodeGen {
     /**
      * Returns the JVM-internal representation of this class name.
      */
-    protected String getThisName() {
+    @Override
+	protected String getThisName() {
         return MemberResolver.javaToJvmName(thisClass.getName());
     }
 
     /**
      * Returns the JVM-internal representation of this super class name.
      */
-    protected String getSuperName() throws CompileError {
+    @Override
+	protected String getSuperName() throws CompileError {
         return MemberResolver.javaToJvmName(
                         MemberResolver.getSuperclass(thisClass).getName());
     }
 
-    protected void insertDefaultSuperCall() throws CompileError {
+    @Override
+	protected void insertDefaultSuperCall() throws CompileError {
         bytecode.addAload(0);
         bytecode.addInvokespecial(MemberResolver.getSuperclass(thisClass),
                                   "<init>", "()V");
@@ -109,7 +112,8 @@ public class MemberCodeGen extends CodeGen {
             b.addIndex(0);
         }
 
-        protected boolean doit(Bytecode b, int opcode) {
+        @Override
+		protected boolean doit(Bytecode b, int opcode) {
             switch (opcode) {
             case Opcode.RETURN :
                 jsrJmp(b);
@@ -157,7 +161,8 @@ public class MemberCodeGen extends CodeGen {
             var = retTarget[1];
         }
 
-        protected boolean doit(Bytecode b, int opcode) {
+        @Override
+		protected boolean doit(Bytecode b, int opcode) {
             switch (opcode) {
             case Opcode.RETURN :
                 break;
@@ -186,7 +191,8 @@ public class MemberCodeGen extends CodeGen {
         }
     }
 
-    protected void atTryStmnt(Stmnt st) throws CompileError {
+    @Override
+	protected void atTryStmnt(Stmnt st) throws CompileError {
         Bytecode bc = bytecode;
         Stmnt body = (Stmnt)st.getLeft();
         if (body == null)
@@ -289,7 +295,8 @@ public class MemberCodeGen extends CodeGen {
         }
     }
 
-    public void atNewExpr(NewExpr expr) throws CompileError {
+    @Override
+	public void atNewExpr(NewExpr expr) throws CompileError {
         if (expr.isArray())
             atNewArrayExpr(expr);
         else {
@@ -408,12 +415,14 @@ public class MemberCodeGen extends CodeGen {
         throw new CompileError("bad new expression");
     }
 
-    protected void atArrayVariableAssign(ArrayInit init, int varType,
+    @Override
+	protected void atArrayVariableAssign(ArrayInit init, int varType,
                                          int varArray, String varClass) throws CompileError {
         atNewArrayExpr2(varType, null, varClass, init);
     }
 
-    public void atArrayInit(ArrayInit init) throws CompileError {
+    @Override
+	public void atArrayInit(ArrayInit init) throws CompileError {
         throw new CompileError("array initializer is not supported");
     }
 
@@ -446,7 +455,8 @@ public class MemberCodeGen extends CodeGen {
         bytecode.addMultiNewarray(desc, count);
     }
 
-    public void atCallExpr(CallExpr expr) throws CompileError {
+    @Override
+	public void atCallExpr(CallExpr expr) throws CompileError {
         String mname = null;
         CtClass targetClass = null;
         ASTree method = expr.oprand1();
@@ -784,7 +794,8 @@ public class MemberCodeGen extends CodeGen {
         }
     }
 
-    protected void atFieldAssign(Expr expr, int op, ASTree left,
+    @Override
+	protected void atFieldAssign(Expr expr, int op, ASTree left,
                         ASTree right, boolean doDup) throws CompileError
     {
         CtField f = fieldAccess(left, false);
@@ -858,11 +869,13 @@ public class MemberCodeGen extends CodeGen {
 
     /* overwritten in JvstCodeGen.
      */
-    public void atMember(Member mem) throws CompileError {
+    @Override
+	public void atMember(Member mem) throws CompileError {
         atFieldRead(mem);
     }
 
-    protected void atFieldRead(ASTree expr) throws CompileError
+    @Override
+	protected void atFieldRead(ASTree expr) throws CompileError
     {
         CtField f = fieldAccess(expr, true);
         if (f == null) {
@@ -983,14 +996,16 @@ public class MemberCodeGen extends CodeGen {
         return cp.addFieldrefInfo(ci, name, type);
     }
 
-    protected void atClassObject2(String cname) throws CompileError {
+    @Override
+	protected void atClassObject2(String cname) throws CompileError {
         if (getMajorVersion() < ClassFile.JAVA_5)
             super.atClassObject2(cname);
         else
             bytecode.addLdc(bytecode.getConstPool().addClassInfo(cname));
     }
 
-    protected void atFieldPlusPlus(int token, boolean isPost,
+    @Override
+	protected void atFieldPlusPlus(int token, boolean isPost,
                                    ASTree oprand, Expr expr, boolean doDup)
         throws CompileError
     {
@@ -1147,14 +1162,16 @@ public class MemberCodeGen extends CodeGen {
      * It may also expand a simple class name to java.lang.*.
      * For example, this converts Object into java/lang/Object.
      */
-    protected String resolveClassName(ASTList name) throws CompileError {
+    @Override
+	protected String resolveClassName(ASTList name) throws CompileError {
         return resolver.resolveClassName(name);
     }
 
     /* Expands a simple class name to java.lang.*.
      * For example, this converts Object into java/lang/Object.
      */
-    protected String resolveClassName(String jvmName) throws CompileError {
+    @Override
+	protected String resolveClassName(String jvmName) throws CompileError {
         return resolver.resolveJvmClassName(jvmName);
     }
 }

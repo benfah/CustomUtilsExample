@@ -40,13 +40,17 @@ public class ASTList extends ASTree {
         return new ASTList(e1, new ASTList(e2, new ASTList(e3)));
     }
 
-    public ASTree getLeft() { return left; }
+    @Override
+	public ASTree getLeft() { return left; }
 
-    public ASTree getRight() { return right; }
+    @Override
+	public ASTree getRight() { return right; }
 
-    public void setLeft(ASTree _left) { left = _left; }
+    @Override
+	public void setLeft(ASTree _left) { left = _left; }
 
-    public void setRight(ASTree _right) {
+    @Override
+	public void setRight(ASTree _right) {
         right = (ASTList)_right;
     }
 
@@ -68,9 +72,11 @@ public class ASTList extends ASTree {
         right = _tail;
     }
 
-    public void accept(Visitor v) throws CompileError { v.atASTList(this); }
+    @Override
+	public void accept(Visitor v) throws CompileError { v.atASTList(this); }
 
-    public String toString() {
+    @Override
+	public String toString() {
         StringBuffer sbuf = new StringBuffer();
         sbuf.append("(<");
         sbuf.append(getTag());
