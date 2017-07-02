@@ -1,0 +1,8 @@
+/*
+!/.gitignore
+!/.gitmodules
+!/src
+!/README.md
+!/LICENSE
+!/pom.xml
+.DS_Store
